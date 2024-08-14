@@ -1,0 +1,11 @@
+root = "."
+tmp_dir = ".tmp"
+
+[build]
+cmd = "go build -o ./.tmp/main ./cmd/server"
+bin = ".tmp/main"
+main = "main.go"
+
+[watch]
+include_ext = ["go", "html"]
+excludes = [".tmp", ".git", ".vscode"]
