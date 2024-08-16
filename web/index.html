@@ -9,14 +9,19 @@
 <body>
   <main class="main">
     <h1 class="title">{{.Title}}</h1>
-    <ul>
-      {{range .Wishes}}
-      <li class="wish">
-        <a class="link" href={{.Link}}>{{.Name}}</a>&nbsp;–&nbsp;
-        {{.Price}}{{.Currency}}
-      </li>
-      {{end}}
-    </ul>
+    {{range $category, $items := .Categories}}
+    <section class="category">
+      <h2 class="heading">{{$category}}</h2>
+      <ul class="list">
+        {{range $items}}
+        <li class="wish">
+          <a class="link" href={{.Link}}>{{.Name}}</a>&nbsp;–&nbsp;
+          {{.Price}}{{.Currency}}
+        </li>
+        {{end}}
+      </ul>
+    </section>
+    {{end}}
   </main>
 </body>
 </html>
