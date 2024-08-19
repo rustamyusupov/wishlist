@@ -1,4 +1,4 @@
-module main.go
+module wishes
 
 go 1.22.5
 
