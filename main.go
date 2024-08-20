@@ -2,26 +2,17 @@ package main
 
 import (
 	"log"
-	"wishes/routes"
-
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/gofiber/fiber/v2/middleware/recover"
-	"github.com/gofiber/template/html/v2"
+	"net/http"
 )
 
-func Run() {
-	engine := html.New("./views", ".html")
-	app := fiber.New(fiber.Config{
-		Views: engine,
-	})
+func main() {
+	InitDB()
 
-	app.Static("/", "./public")
+	fs := http.FileServer(http.Dir("./static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	app.Use(recover.New())
-	app.Use(logger.New())
+	http.HandleFunc("/", IndexPage)
 
-	routes.Routes(app)
-
-	log.Fatal(app.Listen(":3000"))
+	log.Println("🚀 Starting up on port 3000")
+	log.Fatal(http.ListenAndServe(":3000", nil))
 }
