@@ -9,11 +9,11 @@
 <body>
   <main class="main">
     <h1 class="title">{{.Title}}</h1>
-    {{range $category, $items := .Categories}}
+    {{range .Categories}}
     <section class="category">
-      <h2 class="heading">{{$category}}</h2>
+      <h2 class="heading">{{.Name}}</h2>
       <ul class="list">
-        {{range $items}}
+        {{range .Wishes}}
         <li class="wish">
           <a class="link" href={{.Link}}>{{.Name}}</a>&nbsp;–&nbsp;
           {{.Price}}{{.Currency}}
