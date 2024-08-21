@@ -14,7 +14,7 @@ func Connect() *sql.DB {
 		return db
 	}
 
-	db, err := sql.Open("sqlite3", "wishes.sqlite")
+	db, err := sql.Open("sqlite3", "./wishes.db")
 	if err != nil {
 		log.Fatalf("🔥 failed to connect to the database: %s", err.Error())
 	}
@@ -26,9 +26,14 @@ func InitDB() error {
 	db := Connect()
 
 	stmt := `CREATE TABLE IF NOT EXISTS wishes (
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		id INTEGER,
+		link TEXT,
+		name TEXT,
+		price REAL,
+		currency TEXT,
+		category TEXT,
 		created_at TIMESTAMP DEFAULT DATETIME
-	  );`
+	);`
 
 	_, err := db.Exec(stmt)
 	if err != nil {
