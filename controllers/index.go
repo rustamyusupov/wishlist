@@ -1,14 +1,15 @@
-package main
+package controllers
 
 import (
 	"html/template"
+	"main/models"
 	"net/http"
 	"sort"
 )
 
 type Category struct {
-	Name   string `json:"name"`
-	Wishes []Wish `json:"wishes"`
+	Name   string        `json:"name"`
+	Wishes []models.Wish `json:"wishes"`
 }
 
 type Wishlist struct {
@@ -26,8 +27,8 @@ func init() {
 	}
 }
 
-func groupByCategory(wishes []Wish) []Category {
-	categories := make(map[string][]Wish)
+func groupByCategory(wishes []models.Wish) []Category {
+	categories := make(map[string][]models.Wish)
 	for _, wish := range wishes {
 		categories[wish.Category] = append(categories[wish.Category], wish)
 	}
@@ -47,7 +48,7 @@ func sortCategories(categories []Category) []Category {
 }
 
 func IndexPage(w http.ResponseWriter, r *http.Request) {
-	wishes, err := GetWishes()
+	wishes, err := models.GetWishes()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

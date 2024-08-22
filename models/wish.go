@@ -1,4 +1,4 @@
-package main
+package models
 
 type Wish struct {
 	Id        int     `json:"Id"`
