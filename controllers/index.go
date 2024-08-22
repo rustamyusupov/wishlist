@@ -8,8 +8,8 @@ import (
 )
 
 type Category struct {
-	Name   string        `json:"name"`
-	Wishes []models.Wish `json:"wishes"`
+	Name   string
+	Wishes []models.Wish
 }
 
 type Wishlist struct {
