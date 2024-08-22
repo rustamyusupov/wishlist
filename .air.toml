@@ -2,10 +2,18 @@ root = "."
 tmp_dir = ".tmp"
 
 [build]
-cmd = "go build -o ./.tmp/main ."
 bin = ".tmp/main"
-main = "main.go"
-
-[watch]
-include_ext = ["go", "html"]
+cmd = "go build -o ./.tmp/main ."
+delay = 1000
 excludes = [".tmp", ".git", ".vscode"]
+include_ext = ["go", "html"]
+kill_delay = 500
+main = "main.go"
+rerun_delay = 500
+
+[misc]
+clean_on_exit = true
+
+[screen]
+clear_on_rebuild = true
+keep_scroll = true
