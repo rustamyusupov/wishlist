@@ -21,28 +21,3 @@ func Connect() *sql.DB {
 
 	return db
 }
-
-func InitDB() error {
-	db := Connect()
-
-	stmt := `CREATE TABLE IF NOT EXISTS wishes (
-		id INTEGER,
-		link TEXT,
-		name TEXT,
-		price REAL,
-		currency TEXT,
-		category TEXT,
-		created_at TIMESTAMP DEFAULT DATETIME
-	);`
-
-	_, err := db.Exec(stmt)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func Close() {
-	db.Close()
-}
