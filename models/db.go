@@ -21,3 +21,25 @@ func Connect() *sql.DB {
 
 	return db
 }
+
+func Migrate() {
+	db := Connect()
+	defer db.Close()
+
+	query := `
+		CREATE TABLE IF NOT EXISTS wishes (
+			id INTEGER,
+			link TEXT NOT NULL,
+			name TEXT NOT NULL,
+			price REAL NOT NULL,
+			currency TEXT NOT NULL,
+			category TEXT NOT NULL,
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+		);
+	`
+
+	_, err := db.Exec(query)
+	if err != nil {
+		log.Fatalf("🔥 failed to migrate the database: %s", err.Error())
+	}
+}
