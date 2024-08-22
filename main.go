@@ -2,19 +2,16 @@ package main
 
 import (
 	"log"
-	"main/controllers"
-	"main/models"
+
 	"net/http"
+
+	"main/controllers"
 )
 
 func main() {
-	models.InitDB()
-	defer models.Close()
-
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	// TODO: CRUD
 	http.HandleFunc("/", controllers.GetIndex)
 
 	log.Println("🚀 Starting up on port 3000")
