@@ -15,7 +15,7 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	// TODO: CRUD
-	http.HandleFunc("/", controllers.IndexPage)
+	http.HandleFunc("/", controllers.GetIndex)
 
 	log.Println("🚀 Starting up on port 3000")
 	log.Fatal(http.ListenAndServe(":3000", nil))
