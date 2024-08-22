@@ -9,8 +9,8 @@ import (
 )
 
 func main() {
-	fs := http.FileServer(http.Dir("./static"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	fs := http.FileServer(http.Dir("./assets"))
+	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
 	http.HandleFunc("/", controllers.GetIndex)
 
