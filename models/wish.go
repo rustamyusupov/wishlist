@@ -12,6 +12,7 @@ type Wish struct {
 
 func GetWishes() ([]Wish, error) {
 	db := Connect()
+	defer db.Close()
 	// TODO: check select last wish by created_at
 	query := `
 		WITH ranked_wishes AS (
