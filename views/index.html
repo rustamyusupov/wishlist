@@ -1,27 +1,15 @@
-<!DOCTYPE html>
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
-  <title>Wishes</title>
-  <link rel="stylesheet" href="/assets/styles/index.css">
-</head>
-<body>
-  <main class="main">
-    <h1 class="title">{{.Title}}</h1>
-    {{range .Categories}}
-    <section class="category">
-      <h2 class="heading">{{.Name}}</h2>
-      <ul class="list">
-        {{range .Wishes}}
-        <li class="wish">
-          <a class="link" href={{.Link}}>{{.Name}}</a>&nbsp;–&nbsp;
-          {{.Price}}{{.Currency}}
-        </li>
-        {{end}}
-      </ul>
-    </section>
-    {{end}}
-  </main>
-</body>
-</html>
+{{ define "content" }}
+  {{range .Categories}}
+  <section class="category">
+    <h2 class="heading">{{.Name}}</h2>
+    <ul class="list">
+      {{range .Wishes}}
+      <li class="wish">
+        <a class="link" href="{{.Link}}">{{.Name}}</a>&nbsp;–&nbsp; {{.Price}}{{.Currency}}
+      </li>
+      {{end}}
+    </ul>
+  </section>
+  {{end}}
+</main>
+{{ end }}
