@@ -3,6 +3,7 @@ package controllers
 import (
 	"html/template"
 	"net/http"
+	"path/filepath"
 
 	"main/models"
 )
@@ -22,7 +23,7 @@ var tmpl *template.Template
 func init() {
 	if tmpl == nil {
 		if tmpl == nil {
-			tmpl = template.Must(tmpl.ParseGlob("views/*.html"))
+			tmpl = template.Must(tmpl.ParseGlob(filepath.Join("views", "*.html")))
 		}
 	}
 }
@@ -42,5 +43,5 @@ func GetIndex(w http.ResponseWriter, r *http.Request) {
 		Categories: categories,
 	}
 
-	tmpl.ExecuteTemplate(w, "index.html", wishlist)
+	tmpl.ExecuteTemplate(w, "layout.html", wishlist)
 }
