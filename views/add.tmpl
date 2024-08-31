@@ -1,8 +1,25 @@
 {{define "styles"}}<link rel="stylesheet" href="/assets/styles/add.css" />{{ end }}
 {{define "header"}}
-<header>
-  <h1 class="title">Add</h1>
+<header class="header">
+  <h1 class="title">Add wish</h1>
 </header>
 {{ end }}
 {{define "content"}}
+<form class="form">
+  <input class="name" name="name" type="text" placeholder="Description" required />
+  <input class="link" name="link" type="url" placeholder="Link" required />
+  <input class="price" name="price" type="number" min="0" step="any" placeholder="Price" required />
+  <input class="sort" name="sort" type="number" min="0" placeholder="Sort" required />
+  <select class="currency" name="currency" required>
+    <option disabled hidden selected value="">Currency</option>
+  </select>
+  <select class="category" name="category" required>
+    <option disabled hidden selected value="">Category</option>
+  </select>
+  <div class="checkbox wrapper">
+    <input id="archive" class="archive" name="archive" type="checkbox" />
+    <label class="label" for="archive">Archive</label>
+  </div>
+  <button class="default submit" name="user" type="submit">Add</button>
+</form>
 {{ end }}
