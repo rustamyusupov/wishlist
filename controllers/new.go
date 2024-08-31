@@ -11,7 +11,7 @@ type Option struct {
 	Value string
 }
 
-func GetAdd(w http.ResponseWriter, r *http.Request) {
+func GetNew(w http.ResponseWriter, r *http.Request) {
 	currencies, err := models.GetCurrencies()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -26,7 +26,7 @@ func GetAdd(w http.ResponseWriter, r *http.Request) {
 	}
 	categoryOptions := getOptions(categories)
 
-	t, err := template.ParseFiles("views/layout.tmpl", "views/add.tmpl")
+	t, err := template.ParseFiles("views/layout.tmpl", "views/new.tmpl")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

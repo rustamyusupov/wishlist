@@ -13,7 +13,7 @@ func main() {
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
 	http.HandleFunc("/", controllers.GetIndex)
-	http.HandleFunc("/add", controllers.GetAdd)
+	http.HandleFunc("/new", controllers.GetNew)
 
 	log.Println("🚀 Starting up on port 3000")
 	log.Fatal(http.ListenAndServe(":3000", nil))
