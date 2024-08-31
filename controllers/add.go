@@ -6,10 +6,10 @@ import (
 )
 
 func GetAdd(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("views/layout.html", "views/header.html", "views/add.html")
+	t, err := template.ParseFiles("views/layout.tmpl", "views/add.tmpl")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	t.Execute(w, struct{ Title string }{Title: "Add Wish"})
+	t.Execute(w, nil)
 }
