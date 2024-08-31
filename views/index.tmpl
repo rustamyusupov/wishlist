@@ -1,0 +1,22 @@
+{{define "styles"}}<link rel="stylesheet" href="/assets/styles/index.css" />{{ end }}
+{{define "header"}}
+<header class="header">
+  <h1 class="title">Wishlist</h1>
+</header>
+{{ end }} {{define "content"}} {{ range.Categories }}
+<section class="category">
+  <h2 class="heading">{{.Name}}</h2>
+  <ul class="list">
+    {{
+      range.Wishes
+    }}
+    <li class="wish">
+      <a class="link" href="{{.Link}}">{{.Name}}</a
+      >&nbsp;–&nbsp; {{.Price}}{{.Currency}}
+    </li>
+    {{
+      end
+    }}
+  </ul>
+</section>
+{{ end }} {{ end }}
