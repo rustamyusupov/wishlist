@@ -1,0 +1,57 @@
+.header {
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 5px;
+  align-items: center;
+  max-width: 768px;
+}
+
+.name {
+  width: 100%;
+  margin-right: 0;
+}
+
+.link {
+  flex: 1;
+  min-width: 125px;
+}
+
+.price {
+  width: 123px;
+}
+
+.sort {
+  width: 82px;
+}
+
+.currency {
+  width: 115px;
+}
+
+.category {
+  width: 115px;
+}
+
+.wrapper {
+  width: 90px;
+  height: 46px;
+  margin-left: 5px;
+}
+
+.archive {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.submit {
+  margin-top: 10px;
+  margin-left: auto;
+  min-width: 160px;
+}
