@@ -1,3 +1,19 @@
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.controls {
+  margin-left: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  line-height: 1;
+}
+
 .category:not(:last-child) {
   margin-bottom: 20px;
 }
@@ -18,15 +34,5 @@
 
   &:not(:last-child) {
     margin-bottom: 10px;
-  }
-}
-
-.link {
-  color: #1976d2;
-  outline: none;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
   }
 }
