@@ -3,7 +3,6 @@ package controllers
 import (
 	"html/template"
 	"net/http"
-	"path/filepath"
 
 	"main/models"
 )
@@ -16,16 +15,6 @@ type Category struct {
 type Wishlist struct {
 	Title      string
 	Categories []Category
-}
-
-var tmpl *template.Template
-
-func init() {
-	if tmpl == nil {
-		if tmpl == nil {
-			tmpl = template.Must(tmpl.ParseGlob(filepath.Join("views", "*.html")))
-		}
-	}
 }
 
 func GetIndex(w http.ResponseWriter, r *http.Request) {
@@ -43,5 +32,10 @@ func GetIndex(w http.ResponseWriter, r *http.Request) {
 		Categories: categories,
 	}
 
-	tmpl.ExecuteTemplate(w, "layout.html", wishlist)
+	t, err := template.ParseFiles("views/layout.html", "views/header.html", "views/index.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	t.Execute(w, wishlist)
 }
