@@ -12,9 +12,23 @@
   <input class="sort" name="sort" type="number" min="0" placeholder="Sort" required />
   <select class="currency" name="currency" required>
     <option disabled hidden selected value="">Currency</option>
+    {{
+      range.Currencies
+    }}
+    <option key="{{.Value}}" value="{{.Value}}">{{.Label}}</option>
+    {{
+      end
+    }}
   </select>
   <select class="category" name="category" required>
     <option disabled hidden selected value="">Category</option>
+    {{
+      range.Categories
+    }}
+    <option key="{{.Value}}" value="{{.Value}}">{{.Label}}</option>
+    {{
+      end
+    }}
   </select>
   <div class="checkbox wrapper">
     <input id="archive" class="archive" name="archive" type="checkbox" />

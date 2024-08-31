@@ -25,3 +25,11 @@ func sortCategories(categories []Category) []Category {
 	})
 	return categories
 }
+
+func getOptions(values []string) []Option {
+	var options []Option
+	for _, value := range values {
+		options = append(options, Option{Label: value, Value: value})
+	}
+	return options
+}
