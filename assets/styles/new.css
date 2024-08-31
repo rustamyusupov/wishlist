@@ -24,16 +24,16 @@
   width: 123px;
 }
 
-.sort {
+/* .sort {
   width: 82px;
-}
+} */
 
 .currency {
   width: 95px;
 }
 
 .category {
-  width: 165px;
+  flex: 1;
 }
 
 .wrapper {
@@ -51,7 +51,6 @@
 } */
 
 .submit {
-  margin-top: 10px;
   margin-left: auto;
   min-width: 160px;
 }
