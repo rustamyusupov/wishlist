@@ -42,3 +42,27 @@ func GetWishes() ([]Wish, error) {
 
 	return wishes, nil
 }
+
+func CreateWish(name, link, price, currency, category string) error {
+	db := Connect()
+	defer db.Close()
+
+	var lastID int
+	err := db.QueryRow("SELECT COALESCE(MAX(id), 0) FROM wishes").Scan(&lastID)
+	if err != nil {
+		return err
+	}
+
+	newID := lastID + 1
+	query := `
+			INSERT INTO wishes (id, name, link, price, currency, category)
+			VALUES ($1, $2, $3, $4, $5, $6)
+	`
+
+	_, err = db.Exec(query, newID, name, link, price, currency, category)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

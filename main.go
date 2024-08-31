@@ -14,6 +14,7 @@ func main() {
 
 	http.HandleFunc("/", controllers.GetIndex)
 	http.HandleFunc("/new", controllers.GetNew)
+	http.HandleFunc("/create", controllers.PostCreate)
 
 	log.Println("🚀 Starting up on port 3000")
 	log.Fatal(http.ListenAndServe(":3000", nil))
