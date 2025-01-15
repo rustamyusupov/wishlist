@@ -1,0 +1,60 @@
+{{define "styles"}}<link rel="stylesheet" href="/assets/styles/form.css" />{{ end }}
+{{define "header"}}
+<header class="header">
+  <h1 class="title">Edit wish</h1>
+</header>
+{{ end }}
+{{define "content"}}
+<form id="edit" class="form" action="/api/wishes/{{.Wish.Id}}" method="post">
+  <input type="hidden" name="_method" value="" />
+  <input
+    class="name"
+    name="name"
+    type="text"
+    placeholder="Description"
+    value="{{.Wish.Name}}"
+    required
+  />
+  <input class="link" name="link" type="url" placeholder="Link" value="{{.Wish.Link}}" required />
+  <select class="category" name="category" required>
+    <option disabled hidden selected value="">Category</option>
+    {{
+      range.Categories
+    }}
+    <option key="{{.Value}}" value="{{.Value}}" {{if eq .Value $.Wish.Category}}selected{{end}}>
+      {{.Label}}
+    </option>
+    {{
+      end
+    }}
+  </select>
+  <input
+    class="price"
+    name="price"
+    type="number"
+    min="0"
+    step="any"
+    placeholder="Price"
+    value="{{.Wish.Price}}"
+    required
+  />
+  <!-- <input class="sort" name="sort" type="number" min="0" placeholder="Sort" required /> -->
+  <select class="currency" name="currency" required>
+    <option disabled hidden selected value="">Currency</option>
+    {{
+      range.Currencies
+    }}
+    <option key="{{.Value}}" value="{{.Value}}" {{if eq .Value $.Wish.Currency}}selected{{end}}>
+      {{.Label}}
+    </option>
+    {{
+      end
+    }}
+  </select>
+  <div class="action">
+    <button id="DELETE" class="error" name="user" type="submit">Delete</button>
+    <button id="PUT" class="default submit" name="user" type="submit">Update</button>
+  </div>
+</form>
+<script src="/assets/js/form.js"></script>
+{{ end }}
