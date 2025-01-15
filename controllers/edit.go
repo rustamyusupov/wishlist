@@ -7,12 +7,19 @@ import (
 	"main/models"
 )
 
-type Option struct {
-	Label string
-	Value string
-}
+func Edit(w http.ResponseWriter, r *http.Request) {
+	id := r.URL.Query().Get("id")
+	if id == "" {
+		http.Error(w, "id is required", http.StatusBadRequest)
+		return
+	}
 
-func New(w http.ResponseWriter, r *http.Request) {
+	wish, err := models.GetWish(id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	currencies, err := models.GetCurrencies()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -27,16 +34,19 @@ func New(w http.ResponseWriter, r *http.Request) {
 	}
 	categoryOptions := getOptions(categories)
 
-	t, err := template.ParseFiles("views/layout.tmpl", "views/new.tmpl")
+	t, err := template.ParseFiles("views/layout.tmpl", "views/edit.tmpl")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	t.Execute(w, struct {
+		Wish       models.Wish
 		Currencies []Option
 		Categories []Option
 	}{
+		Wish:       wish,
 		Currencies: currencyOptions,
 		Categories: categoryOptions,
 	})
+
 }

@@ -12,7 +12,7 @@ type Category struct {
 	Wishes []models.Wish
 }
 
-func GetIndex(w http.ResponseWriter, r *http.Request) {
+func Index(w http.ResponseWriter, r *http.Request) {
 	wishes, err := models.GetWishes()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
