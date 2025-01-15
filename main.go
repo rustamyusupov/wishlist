@@ -1,24 +1,30 @@
 package main
 
 import (
+	"fmt"
 	"log"
-
 	"net/http"
 
 	"main/controllers"
 )
 
+const port = 3000
+
 func main() {
 	fs := http.FileServer(http.Dir("./assets"))
 	http.Handle("GET /assets/", http.StripPrefix("/assets/", fs))
 
-	http.HandleFunc("GET /", controllers.GetIndex)
-	http.HandleFunc("GET /new", controllers.GetNew)
+	http.HandleFunc("GET /", controllers.Index)
+	http.HandleFunc("GET /new", controllers.New)
+	http.HandleFunc("GET /edit/{id}", controllers.Edit)
 
 	http.HandleFunc("POST /api/wishes", controllers.Post)
+	http.HandleFunc("PUT /api/wishes/{id}", controllers.Put)
+	http.HandleFunc("DELETE /api/wishes/{id}", controllers.Delete)
 
-	// TODO: edit wish / update action
-
-	log.Println("🚀 Starting up on port 3000")
-	log.Fatal(http.ListenAndServe(":3000", nil))
+	log.Printf("🚀 Starting up on http://localhost:%d\n", port)
+	err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	if err != nil {
+		log.Fatalf("Failed to start server: %v", err)
+	}
 }
