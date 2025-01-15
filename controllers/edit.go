@@ -8,7 +8,7 @@ import (
 )
 
 func Edit(w http.ResponseWriter, r *http.Request) {
-	id := r.URL.Query().Get("id")
+	id := r.PathValue("id")
 	if id == "" {
 		http.Error(w, "id is required", http.StatusBadRequest)
 		return
