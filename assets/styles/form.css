@@ -16,10 +16,12 @@
 }
 
 .link {
-  flex: 1;
-  min-width: 125px;
+  width: 100%;
 }
 
+.category {
+  width: 120px;
+}
 .price {
   width: 123px;
 }
@@ -30,10 +32,6 @@
 
 .currency {
   width: 95px;
-}
-
-.category {
-  flex: 1;
 }
 
 .wrapper {
@@ -50,7 +48,14 @@
   cursor: pointer;
 } */
 
+.action {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 10px;
+  gap: 10px;
+}
+
 .submit {
-  margin-left: auto;
   min-width: 160px;
 }
