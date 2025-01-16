@@ -1,12 +1,11 @@
 package controllers
 
 import (
-	"net/http"
-
 	"main/models"
+	"net/http"
 )
 
-func Put(w http.ResponseWriter, r *http.Request) {
+func Patch(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	if id == "" {
 		http.Error(w, "id is required", http.StatusBadRequest)
