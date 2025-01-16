@@ -12,7 +12,7 @@ type Category struct {
 	Wishes []models.Wish
 }
 
-func Index(w http.ResponseWriter, r *http.Request) {
+func Home(w http.ResponseWriter, r *http.Request) {
 	wishes, err := models.GetWishes()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -22,7 +22,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	categories := groupByCategory(wishes)
 	categories = sortCategories(categories)
 
-	t, err := template.ParseFiles("views/layout.tmpl", "views/index.tmpl")
+	t, err := template.ParseFiles("views/layout.tmpl", "views/home.tmpl")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
