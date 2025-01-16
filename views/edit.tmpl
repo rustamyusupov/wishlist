@@ -1,11 +1,14 @@
 {{define "styles"}}<link rel="stylesheet" href="/assets/styles/form.css" />{{ end }}
+{{define "scripts"}}
+<script src="/assets/js/form.js" defer></script>
+{{ end }}
 {{define "header"}}
 <header class="header">
   <h1 class="title">Edit wish</h1>
 </header>
 {{ end }}
 {{define "content"}}
-<form id="edit" class="form">
+<form id="edit" class="form" action="/api/wishes/{{.Wish.Id}}" method="post">
   <input
     class="name"
     name="name"
@@ -51,26 +54,8 @@
     }}
   </select>
   <div class="action">
-    <button
-      id="DELETE"
-      class="error"
-      name="user"
-      type="submit"
-      hx-delete="/api/wishes/{{.Wish.Id}}"
-      hx-target="this"
-    >
-      Delete
-    </button>
-    <button
-      id="PATCH"
-      class="default submit"
-      name="user"
-      type="submit"
-      hx-patch="/api/wishes/{{.Wish.Id}}"
-      hx-target="this"
-    >
-      Update
-    </button>
+    <button id="DELETE" class="error" name="user" type="submit">Delete</button>
+    <button id="PATCH" class="default submit" name="user" type="submit">Update</button>
   </div>
 </form>
 {{ end }}
