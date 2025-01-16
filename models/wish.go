@@ -92,6 +92,10 @@ func UpdateWish(id, name, link, price, currency, category string) error {
 	db := Connect()
 	defer db.Close()
 
+	// TODO: check update last wish by created_at can be bug
+	// create new wish
+	// update price for old one in same category
+	// you have two same wishes wo new one
 	query := `
 		UPDATE wishes
 		SET name = $1, link = $2, price = $3, currency = $4, category = $5
