@@ -41,7 +41,7 @@
   <select class="currency" name="currency" required>
     <option disabled hidden selected value="">Currency</option>
     {{
-      range.Currencies
+      range.Currenciesg
     }}
     <option key="{{.Value}}" value="{{.Value}}" {{if eq .Value $.Wish.Currency}}selected{{end}}>
       {{.Label}}
