@@ -14,7 +14,7 @@ func main() {
 	fs := http.FileServer(http.Dir("./assets"))
 	http.Handle("GET /assets/", http.StripPrefix("/assets/", fs))
 
-	http.HandleFunc("GET /", controllers.Index)
+	http.HandleFunc("GET /", controllers.Home)
 	http.HandleFunc("GET /new", controllers.New)
 	http.HandleFunc("GET /edit/{id}", controllers.Edit)
 
