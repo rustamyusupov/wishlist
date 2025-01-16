@@ -5,8 +5,7 @@
 </header>
 {{ end }}
 {{define "content"}}
-<form id="edit" class="form" action="/api/wishes/{{.Wish.Id}}" method="post">
-  <input type="hidden" name="_method" value="" />
+<form id="edit" class="form">
   <input
     class="name"
     name="name"
@@ -53,8 +52,7 @@
   </select>
   <div class="action">
     <button id="DELETE" class="error" name="user" type="submit">Delete</button>
-    <button id="PUT" class="default submit" name="user" type="submit">Update</button>
+    <button id="PATCH" class="default submit" name="user" type="submit">Update</button>
   </div>
 </form>
-<script src="/assets/js/form.js"></script>
 {{ end }}
