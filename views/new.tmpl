@@ -5,7 +5,7 @@
 </header>
 {{ end }}
 {{define "content"}}
-<form class="form" action="/api/wishes" method="post">
+<form class="form" hx-post="/api/wishes" hx-target="this">
   <input class="name" name="name" type="text" placeholder="Description" required />
   <input class="link" name="link" type="url" placeholder="Link" required />
   <!-- <input class="sort" name="sort" type="number" min="0" placeholder="Sort" required /> -->
