@@ -41,7 +41,7 @@
   <select class="currency" name="currency" required>
     <option disabled hidden selected value="">Currency</option>
     {{
-      range.Currenciesg
+      range.Currencies
     }}
     <option key="{{.Value}}" value="{{.Value}}" {{if eq .Value $.Wish.Currency}}selected{{end}}>
       {{.Label}}
@@ -51,8 +51,26 @@
     }}
   </select>
   <div class="action">
-    <button id="DELETE" class="error" name="user" type="submit">Delete</button>
-    <button id="PATCH" class="default submit" name="user" type="submit">Update</button>
+    <button
+      id="DELETE"
+      class="error"
+      name="user"
+      type="submit"
+      hx-delete="/api/wishes/{{.Wish.Id}}"
+      hx-target="this"
+    >
+      Delete
+    </button>
+    <button
+      id="PATCH"
+      class="default submit"
+      name="user"
+      type="submit"
+      hx-patch="/api/wishes/{{.Wish.Id}}"
+      hx-target="this"
+    >
+      Update
+    </button>
   </div>
 </form>
 {{ end }}
