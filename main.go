@@ -6,11 +6,14 @@ import (
 	"net/http"
 
 	"main/controllers"
+	"main/models"
 )
 
 const port = 3000
 
 func main() {
+	models.Migrate()
+
 	fs := http.FileServer(http.Dir("./assets"))
 	http.Handle("GET /assets/", http.StripPrefix("/assets/", fs))
 
