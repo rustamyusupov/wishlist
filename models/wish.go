@@ -43,7 +43,7 @@ func GetWishes() ([]Wish, error) {
 	return wishes, nil
 }
 
-func CreateWish(name, link, price, currency, category string) error {
+func AddWish(name, link, price, currency, category string) error {
 	db := Connect()
 	defer db.Close()
 

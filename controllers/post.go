@@ -13,7 +13,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = models.CreateWish(r.FormValue("name"), r.FormValue("link"), r.FormValue("price"), r.FormValue("currency"), r.FormValue("category"))
+	err = models.AddWish(r.FormValue("name"), r.FormValue("link"), r.FormValue("price"), r.FormValue("currency"), r.FormValue("category"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
