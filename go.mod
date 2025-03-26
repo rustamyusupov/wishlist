@@ -1,5 +1,5 @@
 module main
 
-go 1.23.0
+go 1.24.1
 
-require github.com/mattn/go-sqlite3 v1.14.22
+require github.com/mattn/go-sqlite3 v1.14.24
