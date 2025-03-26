@@ -48,5 +48,4 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 		Currencies: currencyOptions,
 		Categories: categoryOptions,
 	})
-
 }

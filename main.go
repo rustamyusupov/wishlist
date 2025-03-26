@@ -12,7 +12,7 @@ import (
 const port = 3000
 
 func main() {
-	models.Migrate()
+	models.InitializeDB()
 
 	fs := http.FileServer(http.Dir("./assets"))
 	http.Handle("GET /assets/", http.StripPrefix("/assets/", fs))

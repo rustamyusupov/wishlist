@@ -22,50 +22,69 @@ func Connect() *sql.DB {
 	return db
 }
 
-func Migrate() {
+func InitializeDB() {
 	db := Connect()
 	defer db.Close()
 
-	query := `
+	_, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS categories (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			name TEXT NOT NULL UNIQUE,
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+		);
+	`)
+	if err != nil {
+		log.Fatalf("Failed to create categories table: %s", err.Error())
+	}
+
+	_, err = db.Exec(`
+		CREATE TABLE IF NOT EXISTS currencies (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			code TEXT NOT NULL UNIQUE,
+			symbol TEXT NOT NULL,
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+		);
+	`)
+	if err != nil {
+		log.Fatalf("Failed to create currencies table: %s", err.Error())
+	}
+
+	_, err = db.Exec(`
 		CREATE TABLE IF NOT EXISTS wishes (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			link TEXT NOT NULL,
 			name TEXT NOT NULL,
-			price REAL NOT NULL,
-			currency TEXT NOT NULL,
-			category TEXT NOT NULL,
-			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+			category_id INTEGER NOT NULL,
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+			FOREIGN KEY (category_id) REFERENCES categories(id)
 		);
-	`
-
-	_, err := db.Exec(query)
+	`)
 	if err != nil {
-		log.Fatalf("🔥 failed to migrate the database: %s", err.Error())
+		log.Fatalf("Failed to create wishes table: %s", err.Error())
 	}
 
-	var count int
-	err = db.QueryRow(`SELECT COUNT(*) FROM wishes`).Scan(&count)
+	_, err = db.Exec(`
+		CREATE TABLE IF NOT EXISTS prices (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			wish_id INTEGER NOT NULL,
+			price REAL NOT NULL,
+			currency_id INTEGER NOT NULL,
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+			FOREIGN KEY (wish_id) REFERENCES wishes(id) ON DELETE CASCADE,
+			FOREIGN KEY (currency_id) REFERENCES currencies(id)
+		);
+	`)
 	if err != nil {
-		log.Fatalf("🔥 failed to count wishes: %s", err.Error())
+		log.Fatalf("Failed to create prices table: %s", err.Error())
 	}
 
-	if count == 0 {
-		insertDefaultWishes(db)
-	}
-}
-
-func insertDefaultWishes(db *sql.DB) {
-	defaultWishes := []Wish{
-		{Name: "Wish 1", Link: "http://exmpl.com", Price: 1.0, Currency: "$", Category: "Apparel"},
-		{Name: "Wish 2", Link: "http://exmpl.com", Price: 2.0, Currency: "€", Category: "Cycling Gear"},
-		{Name: "Wish 3", Link: "http://exmpl.com", Price: 3.0, Currency: "₽", Category: "Devices"},
-		{Name: "Wish 4", Link: "http://exmpl.com", Price: 4.0, Currency: "$", Category: "Other"},
+	err = InitializeCategories()
+	if err != nil {
+		log.Fatalf("Failed to initialize categories: %s", err.Error())
 	}
 
-	for _, wish := range defaultWishes {
-		_, err := db.Exec(`INSERT INTO wishes (name, link, price, currency, category) VALUES (?, ?, ?, ?, ?)`, wish.Name, wish.Link, wish.Price, wish.Currency, wish.Category)
-		if err != nil {
-			log.Fatalf("🔥 failed to insert default wish: %s", err.Error())
-		}
+	err = InitializeCurrencies()
+	if err != nil {
+		log.Fatalf("Failed to initialize currencies: %s", err.Error())
 	}
 }

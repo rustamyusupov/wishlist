@@ -7,7 +7,7 @@
 {{ end }}
 {{define "content"}}
 <form class="form" action="/api/wishes" method="post">
-  <input class="name" name="name" type="text" placeholder="Description" required />
+  <input class="name" name="name" type="text" placeholder="Description" autofocus required />
   <input class="link" name="link" type="url" placeholder="Link" required />
   <!-- <input class="sort" name="sort" type="number" min="0" placeholder="Sort" required /> -->
   <select class="category" name="category" required>
