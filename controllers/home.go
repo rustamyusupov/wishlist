@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"main/models"
+	"main/utils"
 )
 
 type Category struct {
@@ -22,7 +23,11 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	categories := groupByCategory(wishes)
 	categories = sortCategories(categories)
 
-	t, err := template.ParseFiles("views/layout.tmpl", "views/home.tmpl")
+	funcMap := template.FuncMap{
+		"formatPrice": utils.FormatPrice,
+	}
+
+	t, err := template.New("layout.tmpl").Funcs(funcMap).ParseFiles("views/layout.tmpl", "views/home.tmpl")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
