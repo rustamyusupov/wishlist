@@ -1,7 +1,8 @@
-package models
+package database
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -22,10 +23,26 @@ func Connect() *sql.DB {
 	return db
 }
 
-func InitializeDB() {
+func Initialize() error {
 	db := Connect()
 	defer db.Close()
 
+	if err := createTables(db); err != nil {
+		return fmt.Errorf("failed to create tables: %w", err)
+	}
+
+	if err := InitializeCategories(); err != nil {
+		return fmt.Errorf("failed to initialize categories: %w", err)
+	}
+
+	if err := InitializeCurrencies(); err != nil {
+		return fmt.Errorf("failed to initialize currencies: %w", err)
+	}
+
+	return nil
+}
+
+func createTables(db *sql.DB) error {
 	_, err := db.Exec(`
 		CREATE TABLE IF NOT EXISTS categories (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -78,13 +95,5 @@ func InitializeDB() {
 		log.Fatalf("Failed to create prices table: %s", err.Error())
 	}
 
-	err = InitializeCategories()
-	if err != nil {
-		log.Fatalf("Failed to initialize categories: %s", err.Error())
-	}
-
-	err = InitializeCurrencies()
-	if err != nil {
-		log.Fatalf("Failed to initialize currencies: %s", err.Error())
-	}
+	return nil
 }

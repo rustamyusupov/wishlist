@@ -1,6 +1,6 @@
-{{define "styles"}}<link rel="stylesheet" href="/assets/styles/form.css" />{{ end }}
+{{define "styles"}}<link rel="stylesheet" href="/static/css/form.css" />{{ end }}
 {{define "scripts"}}
-<script src="/assets/scripts/edit.js" defer></script>
+<script src="/static/js/edit.js" defer></script>
 {{ end }}
 {{define "header"}}
 <header class="header">
@@ -8,7 +8,7 @@
 </header>
 {{ end }}
 {{define "content"}}
-<form id="edit" class="form" action="/api/wishes/{{.Wish.Id}}" method="post">
+<form id="edit" class="form" action="/api/wishes/{{.Wish.ID}}" method="post">
   <input
     class="name"
     name="name"

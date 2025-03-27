@@ -1,4 +1,4 @@
-module main
+module github.com/rustamyusupov/wishes
 
 go 1.24.1
 
