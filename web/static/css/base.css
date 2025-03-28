@@ -12,7 +12,7 @@
   --color-red-light: #e99797;
   --color-red: #d32f2f;
   --color-white: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 16px;
   line-height: 1.3;
 }
