@@ -51,7 +51,7 @@ func createTables(db *sql.DB) error {
 		);
 	`)
 	if err != nil {
-		log.Fatalf("Failed to create categories table: %s", err.Error())
+		return fmt.Errorf("failed to create categories table: %w", err)
 	}
 
 	_, err = db.Exec(`
@@ -63,7 +63,7 @@ func createTables(db *sql.DB) error {
 		);
 	`)
 	if err != nil {
-		log.Fatalf("Failed to create currencies table: %s", err.Error())
+		return fmt.Errorf("failed to create currencies table: %w", err)
 	}
 
 	_, err = db.Exec(`
@@ -77,7 +77,7 @@ func createTables(db *sql.DB) error {
 		);
 	`)
 	if err != nil {
-		log.Fatalf("Failed to create wishes table: %s", err.Error())
+		return fmt.Errorf("failed to create wishes table: %w", err)
 	}
 
 	_, err = db.Exec(`
@@ -92,7 +92,7 @@ func createTables(db *sql.DB) error {
 		);
 	`)
 	if err != nil {
-		log.Fatalf("Failed to create prices table: %s", err.Error())
+		return fmt.Errorf("failed to create prices table: %w", err)
 	}
 
 	return nil

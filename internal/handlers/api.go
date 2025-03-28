@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -11,8 +10,7 @@ import (
 
 func Post(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
-		log.Printf("Error parsing form: %v", err)
-		SendError(w, "Failed to parse form data", http.StatusInternalServerError)
+		HandleError(w, err, http.StatusInternalServerError, "Error parsing form")
 		return
 	}
 
@@ -23,34 +21,31 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	categoryName := r.FormValue("category")
 
 	if name == "" || link == "" || priceStr == "" || currencyCode == "" || categoryName == "" {
-		SendError(w, "All fields are required", http.StatusBadRequest)
+		HandleError(w, fmt.Errorf("all fields are required"), http.StatusBadRequest, "")
 		return
 	}
 
 	price, err := strconv.ParseFloat(priceStr, 64)
 	if err != nil {
-		SendError(w, "Invalid price value", http.StatusBadRequest)
+		HandleError(w, fmt.Errorf("invalid price value"), http.StatusBadRequest, "")
 		return
 	}
 
 	category, err := database.GetCategoryByName(categoryName)
 	if err != nil {
-		log.Printf("Error getting category: %v", err)
-		SendError(w, "Invalid category", http.StatusBadRequest)
+		HandleError(w, err, http.StatusBadRequest, "Error getting category")
 		return
 	}
 
 	currency, err := database.GetCurrencyByCode(currencyCode)
 	if err != nil {
-		log.Printf("Error getting currency: %v", err)
-		SendError(w, "Invalid currency", http.StatusBadRequest)
+		HandleError(w, err, http.StatusBadRequest, "Error getting currency")
 		return
 	}
 
 	_, err = database.CreateWish(link, name, category.ID, price, currency.ID)
 	if err != nil {
-		log.Printf("Error adding wish: %v", err)
-		SendError(w, "Failed to add wish", http.StatusInternalServerError)
+		HandleError(w, err, http.StatusInternalServerError, "Error adding wish")
 		return
 	}
 
@@ -60,19 +55,18 @@ func Post(w http.ResponseWriter, r *http.Request) {
 func Patch(w http.ResponseWriter, r *http.Request) {
 	idParam := r.PathValue("id")
 	if idParam == "" {
-		SendError(w, "Missing wish ID", http.StatusBadRequest)
+		HandleError(w, fmt.Errorf("missing wish ID"), http.StatusBadRequest, "")
 		return
 	}
 
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
-		SendError(w, "Invalid wish ID", http.StatusBadRequest)
+		HandleError(w, fmt.Errorf("invalid wish ID"), http.StatusBadRequest, "")
 		return
 	}
 
 	if err := r.ParseForm(); err != nil {
-		log.Printf("Error parsing form: %v", err)
-		SendError(w, "Failed to parse form data", http.StatusInternalServerError)
+		HandleError(w, err, http.StatusInternalServerError, "Error parsing form")
 		return
 	}
 
@@ -83,33 +77,30 @@ func Patch(w http.ResponseWriter, r *http.Request) {
 	categoryName := r.FormValue("category")
 
 	if name == "" || link == "" || priceStr == "" || currencyCode == "" || categoryName == "" {
-		SendError(w, "All fields are required", http.StatusBadRequest)
+		HandleError(w, fmt.Errorf("all fields are required"), http.StatusBadRequest, "")
 		return
 	}
 
 	category, err := database.GetCategoryByName(categoryName)
 	if err != nil {
-		log.Printf("Error getting category: %v", err)
-		SendError(w, "Invalid category", http.StatusBadRequest)
+		HandleError(w, err, http.StatusBadRequest, "Error getting category")
 		return
 	}
 
 	price, err := strconv.ParseFloat(priceStr, 64)
 	if err != nil {
-		SendError(w, "Invalid price value", http.StatusBadRequest)
+		HandleError(w, fmt.Errorf("invalid price value"), http.StatusBadRequest, "")
 		return
 	}
 
 	currency, err := database.GetCurrencyByCode(currencyCode)
 	if err != nil {
-		log.Printf("Error getting currency: %v", err)
-		SendError(w, "Invalid currency", http.StatusBadRequest)
+		HandleError(w, err, http.StatusBadRequest, "Error getting currency")
 		return
 	}
 
 	if err := database.UpdateWish(id, link, name, category.ID); err != nil {
-		log.Printf("Error updating wish: %v", err)
-		SendError(w, "Failed to update wish", http.StatusInternalServerError)
+		HandleError(w, err, http.StatusInternalServerError, "Error updating wish")
 		return
 	}
 
@@ -117,8 +108,7 @@ func Patch(w http.ResponseWriter, r *http.Request) {
 	if err != nil || latestPrice.Amount != price || latestPrice.CurrencyID != currency.ID {
 		_, err = database.CreatePrice(id, price, currency.ID)
 		if err != nil {
-			log.Printf("Error adding price: %v", err)
-			SendError(w, "Failed to update price", http.StatusInternalServerError)
+			HandleError(w, err, http.StatusInternalServerError, "Error adding price")
 			return
 		}
 	}
@@ -132,23 +122,23 @@ func Patch(w http.ResponseWriter, r *http.Request) {
 func Delete(w http.ResponseWriter, r *http.Request) {
 	idParam := r.PathValue("id")
 	if idParam == "" {
-		SendError(w, "Missing wish ID", http.StatusBadRequest)
+		HandleError(w, fmt.Errorf("missing wish ID"), http.StatusBadRequest, "")
 		return
 	}
 
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
-		SendError(w, "Invalid wish ID", http.StatusBadRequest)
+		HandleError(w, fmt.Errorf("invalid wish ID"), http.StatusBadRequest, "")
 		return
 	}
 
 	if err := database.DeletePricesByWishID(id); err != nil {
-		log.Printf("Error deleting prices for wish: %v", err)
+		HandleError(w, err, http.StatusInternalServerError, "Error deleting prices for wish")
+		return
 	}
 
 	if err := database.DeleteWish(id); err != nil {
-		log.Printf("Error deleting wish: %v", err)
-		SendError(w, "Failed to delete wish", http.StatusInternalServerError)
+		HandleError(w, err, http.StatusInternalServerError, "Error deleting wish")
 		return
 	}
 
