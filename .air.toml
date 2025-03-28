@@ -10,10 +10,7 @@ include_ext = ["go", "html"]
 kill_delay = 500
 main = "./cmd/server/main.go"
 rerun_delay = 500
+full_bin = "SESSION_NAME=session SESSION_KEY=super-secret-key AUTH_EMAIL=i@admin.com AUTH_PASSWORD_HASH=JDJhJDEwJGd3WmEuRUV4bDRnQllNRUE4WXlhamVkZUVJZDZCaGE4Z3J6aVhhbVQ4T0liT0kxUlhFNHMu .tmp/main"
 
 [misc]
 clean_on_exit = true
-
-[screen]
-clear_on_rebuild = true
-keep_scroll = true

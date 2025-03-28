@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 
+	"github.com/rustamyusupov/wishes/internal/auth"
 	"github.com/rustamyusupov/wishes/internal/handlers"
 )
 
@@ -20,5 +21,9 @@ func SetupRoutes() http.Handler {
 	mux.HandleFunc("GET /new", handlers.New)
 	mux.HandleFunc("GET /edit/{id}", handlers.Edit)
 
-	return mux
+	mux.HandleFunc("GET /login", handlers.Login)
+	mux.HandleFunc("POST /login", handlers.Login)
+	mux.HandleFunc("GET /logout", handlers.Logout)
+
+	return auth.AuthMiddleware(mux)
 }

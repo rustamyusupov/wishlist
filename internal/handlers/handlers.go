@@ -25,7 +25,7 @@ func Initialize() error {
 		"formatPrice": FormatPrice,
 	}
 
-	pages := []string{"home", "new", "edit"}
+	pages := []string{"home", "new", "edit", "login"}
 	for _, page := range pages {
 		tmpl, err := template.New("layout.tmpl").Funcs(funcMap).ParseFiles(
 			filepath.Join("web", "templates", "layout.tmpl"),

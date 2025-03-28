@@ -1,12 +1,15 @@
 {{define "styles"}}<link rel="stylesheet" href="/static/css/form.css" />{{ end }}
+
 {{define "scripts"}}
 <script src="/static/js/edit.js" defer></script>
 {{ end }}
+
 {{define "header"}}
 <header class="header">
   <h1 class="title">Edit wish</h1>
 </header>
 {{ end }}
+
 {{define "content"}}
 <form id="edit" class="form" action="/api/wishes/{{.Wish.ID}}" method="post">
   <input

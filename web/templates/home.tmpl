@@ -1,11 +1,11 @@
 {{define "styles"}}<link rel="stylesheet" href="/static/css/home.css" />{{ end }}
-{{define "scripts"
 
+{{define "scripts"}}{{ end }}
 
-}}{{ end }}
 {{define "header"}}
 <header class="header">
   <h1 class="title">Wishlist</h1>
+  {{if .IsAuthenticated}}
   <div class="controls">
     <a class="icon" href="/new">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="24" height="24">
@@ -13,8 +13,12 @@
       </svg>
     </a>
   </div>
+  {{ end }}
 </header>
-{{ end }} {{define "content"}} {{ range.Categories }}
+{{ end }}
+
+{{define "content"}}
+{{ range.Categories }}
 <section class="category">
   <h2 class="heading">{{.Name}}</h2>
   <ul class="list">
@@ -22,6 +26,7 @@
       range.Wishes
     }}
     <li class="wish">
+      {{if $.IsAuthenticated}}
       <a class="icon edit" href="/edit/{{.ID}}">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="26" height="26">
           <path
@@ -29,12 +34,15 @@
           ></path>
         </svg>
       </a>
+      {{ end }}
+
       <a href="{{.Link}}">{{.Name}}</a
-      >&nbsp;–&nbsp; {{ formatPrice .Price }} {{.Currency}}
+      >&nbsp;–&nbsp; {{ formatPrice (.Price) }} {{.Currency}}
     </li>
     {{
       end
     }}
   </ul>
 </section>
-{{ end }} {{ end }}
+{{ end }}
+{{ end }}

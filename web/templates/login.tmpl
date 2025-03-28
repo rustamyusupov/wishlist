@@ -1,0 +1,33 @@
+{{define "styles"}}
+<link rel="stylesheet" href="/static/css/login.css" />
+{{ end }}
+
+{{define "scripts"}}{{ end }}
+
+{{define "header"}}{{ end }}
+
+{{define "content"}}
+<section class="login">
+  <h1 class="title">Sign In</h1>
+  <form class="form" method="POST" action="/login">
+    <input
+      id="email"
+      class="field"
+      name="email"
+      placeholder="Email"
+      type="email"
+      required
+      autofocus
+    />
+    <input
+      id="password"
+      class="field"
+      name="password"
+      placeholder="Password"
+      type="password"
+      required
+    />
+    <button class="default submit button" type="submit">Login</button>
+  </form>
+</section>
+{{ end }}

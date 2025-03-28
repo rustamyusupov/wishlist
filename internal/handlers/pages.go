@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"sort"
 
+	"github.com/rustamyusupov/wishes/internal/auth"
 	"github.com/rustamyusupov/wishes/internal/database"
 	"github.com/rustamyusupov/wishes/internal/models"
 )
@@ -22,7 +23,17 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	}
 
 	categories := organizeWishesByCategory(wishes)
-	RenderTemplate(w, "home", struct{ Categories []DisplayCategory }{Categories: categories})
+	isAuthenticated := auth.IsAuthenticated(r)
+
+	data := struct {
+		Categories      []DisplayCategory
+		IsAuthenticated bool
+	}{
+		Categories:      categories,
+		IsAuthenticated: isAuthenticated,
+	}
+
+	RenderTemplate(w, "home", data)
 }
 
 func New(w http.ResponseWriter, r *http.Request) {
