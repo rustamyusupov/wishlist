@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -15,7 +16,14 @@ func Connect() *sql.DB {
 		return db
 	}
 
-	db, err := sql.Open("sqlite3", "./wishes.db")
+	dbPath := os.Getenv("DB_URL")
+	if dbPath == "" {
+		dbPath = "./wishes.db"
+	}
+
+	log.Printf("Connecting to database at: %s", dbPath)
+
+	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		log.Fatalf("🔥 failed to connect to the database: %s", err.Error())
 	}
