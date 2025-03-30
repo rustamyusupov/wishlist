@@ -14,8 +14,7 @@ var predefinedCurrencies = map[string]string{
 }
 
 func InitializeCurrencies() error {
-	db := Connect()
-	defer db.Close()
+	db := GetDB()
 
 	for code, symbol := range predefinedCurrencies {
 		_, err := db.Exec("INSERT OR IGNORE INTO currencies (code, symbol) VALUES (?, ?)", code, symbol)
@@ -28,8 +27,7 @@ func InitializeCurrencies() error {
 }
 
 func GetCurrencies() ([]models.Currency, error) {
-	db := Connect()
-	defer db.Close()
+	db := GetDB()
 
 	rows, err := db.Query(`SELECT id, code, symbol FROM currencies ORDER BY code`)
 	if err != nil {
@@ -54,8 +52,7 @@ func GetCurrencies() ([]models.Currency, error) {
 }
 
 func GetCurrencyByCode(code string) (models.Currency, error) {
-	db := Connect()
-	defer db.Close()
+	db := GetDB()
 
 	var currency models.Currency
 	err := db.QueryRow(`SELECT id, code, symbol FROM currencies WHERE code = ?`, code).

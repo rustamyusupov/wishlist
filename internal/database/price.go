@@ -8,8 +8,7 @@ import (
 )
 
 func GetLatestPrice(wishID int) (models.Price, error) {
-	db := Connect()
-	defer db.Close()
+	db := GetDB()
 
 	query := `
 		SELECT p.id, p.wish_id, p.price, p.currency_id, c.code, p.created_at
@@ -39,8 +38,7 @@ func GetLatestPrice(wishID int) (models.Price, error) {
 }
 
 func CreatePrice(wishID int, amount float64, currencyID int) (models.Price, error) {
-	db := Connect()
-	defer db.Close()
+	db := GetDB()
 
 	result, err := db.Exec(
 		`INSERT INTO prices (wish_id, price, currency_id) VALUES (?, ?, ?)`,
@@ -69,8 +67,7 @@ func CreatePrice(wishID int, amount float64, currencyID int) (models.Price, erro
 }
 
 func UpdatePrice(id int, amount float64, currencyID int) error {
-	db := Connect()
-	defer db.Close()
+	db := GetDB()
 
 	_, err := db.Exec(
 		`UPDATE prices SET price = ?, currency_id = ? WHERE id = ?`,
@@ -84,8 +81,7 @@ func UpdatePrice(id int, amount float64, currencyID int) error {
 }
 
 func DeletePricesByWishID(wishID int) error {
-	db := Connect()
-	defer db.Close()
+	db := GetDB()
 
 	_, err := db.Exec(`DELETE FROM prices WHERE wish_id = ?`, wishID)
 	if err != nil {

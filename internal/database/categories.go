@@ -10,8 +10,7 @@ import (
 var predefinedCategories = []string{"Apparel", "Devices", "Equipment", "Other"}
 
 func InitializeCategories() error {
-	db := Connect()
-	defer db.Close()
+	db := GetDB()
 
 	for _, category := range predefinedCategories {
 		_, err := db.Exec("INSERT OR IGNORE INTO categories (name) VALUES (?)", category)
@@ -24,8 +23,7 @@ func InitializeCategories() error {
 }
 
 func GetCategories() ([]models.Category, error) {
-	db := Connect()
-	defer db.Close()
+	db := GetDB()
 
 	rows, err := db.Query(`SELECT id, name FROM categories ORDER BY name`)
 	if err != nil {
@@ -50,8 +48,7 @@ func GetCategories() ([]models.Category, error) {
 }
 
 func GetCategoryByName(name string) (models.Category, error) {
-	db := Connect()
-	defer db.Close()
+	db := GetDB()
 
 	var category models.Category
 	err := db.QueryRow(`SELECT id, name FROM categories WHERE name = ?`, name).Scan(&category.ID, &category.Name)

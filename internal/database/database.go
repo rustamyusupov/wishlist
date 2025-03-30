@@ -11,7 +11,7 @@ import (
 
 var db *sql.DB
 
-func Connect() *sql.DB {
+func connect() *sql.DB {
 	if db != nil {
 		return db
 	}
@@ -23,19 +23,23 @@ func Connect() *sql.DB {
 
 	log.Printf("Connecting to database at: %s", dbPath)
 
-	db, err := sql.Open("sqlite3", dbPath)
+	var err error
+	db, err = sql.Open("sqlite3", dbPath)
 	if err != nil {
 		log.Fatalf("🔥 failed to connect to the database: %s", err.Error())
+	}
+
+	if err = db.Ping(); err != nil {
+		log.Fatalf("Failed to ping database: %v", err)
 	}
 
 	return db
 }
 
 func Initialize() error {
-	db := Connect()
-	defer db.Close()
+	db = connect()
 
-	if err := createTables(db); err != nil {
+	if err := createTables(); err != nil {
 		return fmt.Errorf("failed to create tables: %w", err)
 	}
 
@@ -50,7 +54,11 @@ func Initialize() error {
 	return nil
 }
 
-func createTables(db *sql.DB) error {
+func GetDB() *sql.DB {
+	return db
+}
+
+func createTables() error {
 	_, err := db.Exec(`
 		CREATE TABLE IF NOT EXISTS categories (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -7,8 +7,7 @@ import (
 )
 
 func GetWishes() ([]models.Wish, error) {
-	db := Connect()
-	defer db.Close()
+	db := GetDB()
 
 	query := `
 		SELECT w.id, w.link, w.name, p.price, cur.symbol, cat.name, w.created_at
@@ -44,8 +43,7 @@ func GetWishes() ([]models.Wish, error) {
 }
 
 func GetWishByID(id string) (models.Wish, error) {
-	db := Connect()
-	defer db.Close()
+	db := GetDB()
 
 	query := `
 		SELECT w.id, w.link, w.name, p.price, cur.code, cat.name, w.created_at
@@ -72,8 +70,7 @@ func GetWishByID(id string) (models.Wish, error) {
 }
 
 func CreateWish(link, name string, categoryID int, price float64, currencyID int) (int, error) {
-	db := Connect()
-	defer db.Close()
+	db := GetDB()
 
 	tx, err := db.Begin()
 	if err != nil {
@@ -112,8 +109,7 @@ func CreateWish(link, name string, categoryID int, price float64, currencyID int
 }
 
 func UpdateWish(id int, link, name string, categoryID int) error {
-	db := Connect()
-	defer db.Close()
+	db := GetDB()
 
 	_, err := db.Exec(
 		`UPDATE wishes SET link = ?, name = ?, category_id = ? WHERE id = ?`,
@@ -127,8 +123,7 @@ func UpdateWish(id int, link, name string, categoryID int) error {
 }
 
 func DeleteWish(id int) error {
-	db := Connect()
-	defer db.Close()
+	db := GetDB()
 
 	_, err := db.Exec(`DELETE FROM wishes WHERE id = ?`, id)
 	if err != nil {
