@@ -15,6 +15,14 @@ import (
 
 var store = sessions.NewCookieStore([]byte(getSessionKey()))
 
+func init() {
+	store.Options = &sessions.Options{
+		Path:     "/",
+		MaxAge:   365 * 24 * 60 * 60,
+		HttpOnly: true,
+	}
+}
+
 func getSessionName() string {
 	name := os.Getenv("SESSION_NAME")
 	if name == "" {
