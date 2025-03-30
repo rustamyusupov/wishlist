@@ -31,8 +31,8 @@ WORKDIR /app
 
 COPY --from=builder /app/wishes /app/wishes
 COPY --from=builder /app/web /app/web
+RUN mkdir -p /app/data
 
 EXPOSE 8080
-RUN mkdir -p /app/data
 
 CMD ["/app/wishes"]
