@@ -38,7 +38,11 @@
 .wish {
   position: relative;
   max-width: 70ch;
-  padding-left: 40px;
+  padding-left: 15px;
+
+  &.indent {
+    padding-left: 40px;
+  }
 
   &:not(:last-child) {
     margin-bottom: 10px;

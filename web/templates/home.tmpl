@@ -25,7 +25,7 @@
     {{
       range.Wishes
     }}
-    <li class="wish">
+    <li class="wish {{if $.IsAuthenticated}}indent{{ end }}">
       {{if $.IsAuthenticated}}
       <a class="icon edit" href="/edit/{{.ID}}">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="26" height="26">
