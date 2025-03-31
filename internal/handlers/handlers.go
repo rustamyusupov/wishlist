@@ -55,7 +55,7 @@ func FormatPrice(price float64) string {
 		}
 
 		if len(result) > 0 {
-			result = intPart[start:i] + " " + result
+			result = intPart[start:i] + " " + result
 		} else {
 			result = intPart[start:i]
 		}
