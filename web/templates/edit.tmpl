@@ -44,7 +44,6 @@
     value="{{.Wish.Price}}"
     required
   />
-  <!-- <input class="sort" name="sort" type="number" min="0" placeholder="Sort" required /> -->
   <select class="currency" name="currency" required>
     <option disabled hidden selected value="">Currency</option>
     {{
@@ -57,6 +56,19 @@
       end
     }}
   </select>
+  <input
+    class="sort"
+    name="sort"
+    type="number"
+    min="0"
+    placeholder="Sort"
+    value="{{.Wish.Sort}}"
+    required
+  />
+  <div class="checkbox wrapper">
+    <input id="archive" class="archive" name="archive" type="checkbox" />
+    <label class="label" for="archive">Archive</label>
+  </div>
   <div class="action">
     <button id="DELETE" class="error" name="user" type="submit">Delete</button>
     <button id="PATCH" class="default submit" name="user" type="submit">Update</button>

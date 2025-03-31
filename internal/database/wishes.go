@@ -10,7 +10,7 @@ func GetWishes() ([]models.Wish, error) {
 	db := GetDB()
 
 	query := `
-		SELECT w.id, w.link, w.name, p.price, cur.symbol, cat.name, w.created_at
+		SELECT w.id, w.link, w.name, p.price, cur.symbol, cat.name, w.sort, w.created_at
 		FROM wishes w
 		JOIN categories cat ON w.category_id = cat.id
 		JOIN (
@@ -20,7 +20,7 @@ func GetWishes() ([]models.Wish, error) {
 		) latest_p ON latest_p.wish_id = w.id
 		JOIN prices p ON p.wish_id = w.id AND p.created_at = latest_p.max_date
 		JOIN currencies cur ON p.currency_id = cur.id
-		ORDER BY cat.name, w.name
+		ORDER BY cat.name, w.sort, w.name
 	`
 
 	rows, err := db.Query(query)
@@ -32,7 +32,7 @@ func GetWishes() ([]models.Wish, error) {
 	var wishes []models.Wish
 	for rows.Next() {
 		var wish models.Wish
-		err := rows.Scan(&wish.ID, &wish.Link, &wish.Name, &wish.Price, &wish.Currency, &wish.Category, &wish.CreatedAt)
+		err := rows.Scan(&wish.ID, &wish.Link, &wish.Name, &wish.Price, &wish.Currency, &wish.Category, &wish.Sort, &wish.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -46,7 +46,7 @@ func GetWishByID(id string) (models.Wish, error) {
 	db := GetDB()
 
 	query := `
-		SELECT w.id, w.link, w.name, p.price, cur.code, cat.name, w.created_at
+		SELECT w.id, w.link, w.name, p.price, cur.code, cat.name, w.sort, w.created_at
 		FROM wishes w
 		JOIN categories cat ON w.category_id = cat.id
 		JOIN (
@@ -61,7 +61,7 @@ func GetWishByID(id string) (models.Wish, error) {
 	`
 
 	var wish models.Wish
-	err := db.QueryRow(query, id, id).Scan(&wish.ID, &wish.Link, &wish.Name, &wish.Price, &wish.Currency, &wish.Category, &wish.CreatedAt)
+	err := db.QueryRow(query, id, id).Scan(&wish.ID, &wish.Link, &wish.Name, &wish.Price, &wish.Currency, &wish.Category, &wish.Sort, &wish.CreatedAt)
 	if err != nil {
 		return models.Wish{}, err
 	}
@@ -69,7 +69,7 @@ func GetWishByID(id string) (models.Wish, error) {
 	return wish, nil
 }
 
-func CreateWish(link, name string, categoryID int, price float64, currencyID int) (int, error) {
+func CreateWish(link, name string, categoryID int, price float64, currencyID int, sort int) (int, error) {
 	db := GetDB()
 
 	tx, err := db.Begin()
@@ -79,8 +79,8 @@ func CreateWish(link, name string, categoryID int, price float64, currencyID int
 	defer tx.Rollback()
 
 	result, err := tx.Exec(
-		`INSERT INTO wishes (link, name, category_id) VALUES (?, ?, ?)`,
-		link, name, categoryID,
+		`INSERT INTO wishes (link, name, category_id, sort) VALUES (?, ?, ?, ?)`,
+		link, name, categoryID, sort,
 	)
 	if err != nil {
 		return 0, fmt.Errorf("failed to create wish: %w", err)
@@ -108,12 +108,12 @@ func CreateWish(link, name string, categoryID int, price float64, currencyID int
 	return int(wishID), nil
 }
 
-func UpdateWish(id int, link, name string, categoryID int) error {
+func UpdateWish(id int, link, name string, categoryID int, sort int) error {
 	db := GetDB()
 
 	_, err := db.Exec(
-		`UPDATE wishes SET link = ?, name = ?, category_id = ? WHERE id = ?`,
-		link, name, categoryID, id,
+		`UPDATE wishes SET link = ?, name = ?, category_id = ?, sort = ? WHERE id = ?`,
+		link, name, categoryID, sort, id,
 	)
 	if err != nil {
 		return fmt.Errorf("failed to update wish: %w", err)

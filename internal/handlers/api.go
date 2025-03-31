@@ -19,6 +19,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	priceStr := r.FormValue("price")
 	currencyCode := r.FormValue("currency")
 	categoryName := r.FormValue("category")
+	sortStr := r.FormValue("sort")
 
 	if name == "" || link == "" || priceStr == "" || currencyCode == "" || categoryName == "" {
 		HandleError(w, fmt.Errorf("all fields are required"), http.StatusBadRequest, "")
@@ -29,6 +30,15 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		HandleError(w, fmt.Errorf("invalid price value"), http.StatusBadRequest, "")
 		return
+	}
+
+	sort := 0
+	if sortStr != "" {
+		sort, err = strconv.Atoi(sortStr)
+		if err != nil {
+			HandleError(w, fmt.Errorf("invalid sort value"), http.StatusBadRequest, "")
+			return
+		}
 	}
 
 	category, err := database.GetCategoryByName(categoryName)
@@ -43,7 +53,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = database.CreateWish(link, name, category.ID, price, currency.ID)
+	_, err = database.CreateWish(link, name, category.ID, price, currency.ID, sort)
 	if err != nil {
 		HandleError(w, err, http.StatusInternalServerError, "Error adding wish")
 		return
@@ -75,6 +85,7 @@ func Patch(w http.ResponseWriter, r *http.Request) {
 	priceStr := r.FormValue("price")
 	currencyCode := r.FormValue("currency")
 	categoryName := r.FormValue("category")
+	sortStr := r.FormValue("sort")
 
 	if name == "" || link == "" || priceStr == "" || currencyCode == "" || categoryName == "" {
 		HandleError(w, fmt.Errorf("all fields are required"), http.StatusBadRequest, "")
@@ -93,13 +104,22 @@ func Patch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	sort := 0
+	if sortStr != "" {
+		sort, err = strconv.Atoi(sortStr)
+		if err != nil {
+			HandleError(w, fmt.Errorf("invalid sort value"), http.StatusBadRequest, "")
+			return
+		}
+	}
+
 	currency, err := database.GetCurrencyByCode(currencyCode)
 	if err != nil {
 		HandleError(w, err, http.StatusBadRequest, "Error getting currency")
 		return
 	}
 
-	if err := database.UpdateWish(id, link, name, category.ID); err != nil {
+	if err := database.UpdateWish(id, link, name, category.ID, sort); err != nil {
 		HandleError(w, err, http.StatusInternalServerError, "Error updating wish")
 		return
 	}

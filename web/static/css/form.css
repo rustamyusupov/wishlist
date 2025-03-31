@@ -16,37 +16,38 @@
 }
 
 .link {
-  width: 100%;
+  flex: 1;
+  min-width: 245px;
 }
 
 .category {
-  width: 120px;
-}
-.price {
-  width: 123px;
+  width: 115px;
 }
 
-/* .sort {
-  width: 82px;
-} */
+.price {
+  width: 90px;
+}
+
+.sort {
+  width: 75px;
+}
 
 .currency {
   width: 95px;
 }
 
 .wrapper {
-  width: 90px;
   height: 46px;
   margin-left: 5px;
 }
 
-/* .archive {
+.archive {
   width: 16px;
   height: 16px;
   padding: 0;
   margin-right: 5px;
   cursor: pointer;
-} */
+}
 
 .action {
   display: flex;

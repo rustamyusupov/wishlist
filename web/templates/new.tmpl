@@ -12,7 +12,6 @@
 <form class="form" action="/api/wishes" method="post">
   <input class="name" name="name" type="text" placeholder="Description" autofocus required />
   <input class="link" name="link" type="url" placeholder="Link" required />
-  <!-- <input class="sort" name="sort" type="number" min="0" placeholder="Sort" required /> -->
   <select class="category" name="category" required>
     <option disabled hidden selected value="">Category</option>
     {{
@@ -34,10 +33,7 @@
       end
     }}
   </select>
-  <!-- <div class="checkbox wrapper">
-    <input id="archive" class="archive" name="archive" type="checkbox" />
-    <label class="label" for="archive">Archive</label>
-  </div> -->
+  <input class="sort" name="sort" type="number" min="0" placeholder="Sort" required />
   <div class="action">
     <button class="default submit" name="user" type="submit">Add</button>
   </div>

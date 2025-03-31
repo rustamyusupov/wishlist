@@ -88,6 +88,7 @@ func createTables() error {
 			link TEXT NOT NULL,
 			name TEXT NOT NULL,
 			category_id INTEGER NOT NULL,
+			sort INTEGER DEFAULT 0,
 			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 			FOREIGN KEY (category_id) REFERENCES categories(id)
 		);

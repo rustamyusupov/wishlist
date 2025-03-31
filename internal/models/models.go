@@ -29,6 +29,7 @@ type Wish struct {
 	Category   string    `json:"category"`
 	Price      float64   `json:"price"`
 	Currency   string    `json:"currency"`
+	Sort       int       `json:"sort"`
 	CreatedAt  time.Time `json:"created_at"`
 }
 
