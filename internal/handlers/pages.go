@@ -5,24 +5,24 @@ import (
 	"net/http"
 	"sort"
 
-	"github.com/rustamyusupov/wishes/internal/auth"
-	"github.com/rustamyusupov/wishes/internal/database"
-	"github.com/rustamyusupov/wishes/internal/models"
+	"github.com/rustamyusupov/wishlist/internal/auth"
+	"github.com/rustamyusupov/wishlist/internal/database"
+	"github.com/rustamyusupov/wishlist/internal/models"
 )
 
 type DisplayCategory struct {
-	Name   string
-	Wishes []models.Wish
+	Name     string
+	Wishlist []models.Wish
 }
 
 func Home(w http.ResponseWriter, r *http.Request) {
-	wishes, err := database.GetWishes()
+	wishlist, err := database.GetWishlist()
 	if err != nil {
-		HandleError(w, err, http.StatusInternalServerError, "Failed to get wishes")
+		HandleError(w, err, http.StatusInternalServerError, "Failed to get wishlist")
 		return
 	}
 
-	categories := organizeWishesByCategory(wishes)
+	categories := organizeWishlistByCategory(wishlist)
 	isAuthenticated := auth.IsAuthenticated(r)
 
 	data := struct {
@@ -98,17 +98,17 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 	RenderTemplate(w, "edit", data)
 }
 
-func organizeWishesByCategory(wishes []models.Wish) []DisplayCategory {
+func organizeWishlistByCategory(wishlist []models.Wish) []DisplayCategory {
 	categoryMap := make(map[string][]models.Wish)
-	for _, wish := range wishes {
+	for _, wish := range wishlist {
 		categoryMap[wish.Category] = append(categoryMap[wish.Category], wish)
 	}
 
 	var displayCategories []DisplayCategory
-	for name, categoryWishes := range categoryMap {
+	for name, categoryWishlist := range categoryMap {
 		displayCategories = append(displayCategories, DisplayCategory{
-			Name:   name,
-			Wishes: categoryWishes,
+			Name:     name,
+			Wishlist: categoryWishlist,
 		})
 	}
 

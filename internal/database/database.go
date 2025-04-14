@@ -18,7 +18,7 @@ func connect() *sql.DB {
 
 	dbPath := os.Getenv("DB_URL")
 	if dbPath == "" {
-		dbPath = "./wishes.db"
+		dbPath = "./wishlist.db"
 	}
 
 	log.Printf("Connecting to database at: %s", dbPath)
@@ -83,7 +83,7 @@ func createTables() error {
 	}
 
 	_, err = db.Exec(`
-		CREATE TABLE IF NOT EXISTS wishes (
+		CREATE TABLE IF NOT EXISTS wishlist (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			link TEXT NOT NULL,
 			name TEXT NOT NULL,
@@ -94,7 +94,7 @@ func createTables() error {
 		);
 	`)
 	if err != nil {
-		return fmt.Errorf("failed to create wishes table: %w", err)
+		return fmt.Errorf("failed to create wishlist table: %w", err)
 	}
 
 	_, err = db.Exec(`
@@ -104,7 +104,7 @@ func createTables() error {
 			price REAL NOT NULL,
 			currency_id INTEGER NOT NULL,
 			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-			FOREIGN KEY (wish_id) REFERENCES wishes(id) ON DELETE CASCADE,
+			FOREIGN KEY (wish_id) REFERENCES wishlist(id) ON DELETE CASCADE,
 			FOREIGN KEY (currency_id) REFERENCES currencies(id)
 		);
 	`)

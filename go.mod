@@ -1,4 +1,4 @@
-module github.com/rustamyusupov/wishes
+module github.com/rustamyusupov/wishlist
 
 go 1.24.1
 

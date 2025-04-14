@@ -9,7 +9,7 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=1 go build -o wishes ./cmd/server/main.go
+RUN CGO_ENABLED=1 go build -o wishlist ./cmd/server/main.go
 
 FROM alpine:latest
 
@@ -29,10 +29,10 @@ RUN apk add --no-cache libc6-compat ca-certificates
 
 WORKDIR /app
 
-COPY --from=builder /app/wishes /app/wishes
+COPY --from=builder /app/wishlist /app/wishlist
 COPY --from=builder /app/web /app/web
 RUN mkdir -p /app/data
 
 EXPOSE 8080
 
-CMD ["/app/wishes"]
+CMD ["/app/wishlist"]

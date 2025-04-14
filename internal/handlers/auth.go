@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/rustamyusupov/wishes/internal/auth"
+	"github.com/rustamyusupov/wishlist/internal/auth"
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {

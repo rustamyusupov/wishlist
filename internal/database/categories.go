@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/rustamyusupov/wishes/internal/models"
+	"github.com/rustamyusupov/wishlist/internal/models"
 )
 
 var predefinedCategories = []string{"Apparel", "Devices", "Equipment", "Other"}
