@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/rustamyusupov/wishes/internal/database"
-	"github.com/rustamyusupov/wishes/internal/handlers"
-	"github.com/rustamyusupov/wishes/internal/routes"
+	"github.com/rustamyusupov/wishlist/internal/database"
+	"github.com/rustamyusupov/wishlist/internal/handlers"
+	"github.com/rustamyusupov/wishlist/internal/routes"
 )
 
 func main() {

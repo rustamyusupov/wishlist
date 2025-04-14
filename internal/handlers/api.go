@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/rustamyusupov/wishes/internal/database"
+	"github.com/rustamyusupov/wishlist/internal/database"
 )
 
 func Post(w http.ResponseWriter, r *http.Request) {

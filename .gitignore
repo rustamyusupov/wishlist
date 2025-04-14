@@ -2,4 +2,4 @@
 .env
 .vscode
 .tmp
-wishes.db
+wishlist.db

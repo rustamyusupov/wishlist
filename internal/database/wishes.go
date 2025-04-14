@@ -3,15 +3,15 @@ package database
 import (
 	"fmt"
 
-	"github.com/rustamyusupov/wishes/internal/models"
+	"github.com/rustamyusupov/wishlist/internal/models"
 )
 
-func GetWishes() ([]models.Wish, error) {
+func GetWishlist() ([]models.Wish, error) {
 	db := GetDB()
 
 	query := `
 		SELECT w.id, w.link, w.name, p.price, cur.symbol, cat.name, w.sort, w.created_at
-		FROM wishes w
+		FROM wishlist w
 		JOIN categories cat ON w.category_id = cat.id
 		JOIN (
 			SELECT wish_id, price, currency_id, MAX(created_at) as max_date
@@ -29,17 +29,17 @@ func GetWishes() ([]models.Wish, error) {
 	}
 	defer rows.Close()
 
-	var wishes []models.Wish
+	var wishlist []models.Wish
 	for rows.Next() {
 		var wish models.Wish
 		err := rows.Scan(&wish.ID, &wish.Link, &wish.Name, &wish.Price, &wish.Currency, &wish.Category, &wish.Sort, &wish.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
-		wishes = append(wishes, wish)
+		wishlist = append(wishlist, wish)
 	}
 
-	return wishes, nil
+	return wishlist, nil
 }
 
 func GetWishByID(id string) (models.Wish, error) {
@@ -47,7 +47,7 @@ func GetWishByID(id string) (models.Wish, error) {
 
 	query := `
 		SELECT w.id, w.link, w.name, p.price, cur.code, cat.name, w.sort, w.created_at
-		FROM wishes w
+		FROM wishlist w
 		JOIN categories cat ON w.category_id = cat.id
 		JOIN (
 			SELECT wish_id, price, currency_id, MAX(created_at) as max_date
@@ -79,7 +79,7 @@ func CreateWish(link, name string, categoryID int, price float64, currencyID int
 	defer tx.Rollback()
 
 	result, err := tx.Exec(
-		`INSERT INTO wishes (link, name, category_id, sort) VALUES (?, ?, ?, ?)`,
+		`INSERT INTO wishlist (link, name, category_id, sort) VALUES (?, ?, ?, ?)`,
 		link, name, categoryID, sort,
 	)
 	if err != nil {
@@ -112,7 +112,7 @@ func UpdateWish(id int, link, name string, categoryID int, sort int) error {
 	db := GetDB()
 
 	_, err := db.Exec(
-		`UPDATE wishes SET link = ?, name = ?, category_id = ?, sort = ? WHERE id = ?`,
+		`UPDATE wishlist SET link = ?, name = ?, category_id = ?, sort = ? WHERE id = ?`,
 		link, name, categoryID, sort, id,
 	)
 	if err != nil {
@@ -125,7 +125,7 @@ func UpdateWish(id int, link, name string, categoryID int, sort int) error {
 func DeleteWish(id int) error {
 	db := GetDB()
 
-	_, err := db.Exec(`DELETE FROM wishes WHERE id = ?`, id)
+	_, err := db.Exec(`DELETE FROM wishlist WHERE id = ?`, id)
 	if err != nil {
 		return fmt.Errorf("failed to delete wish: %w", err)
 	}
