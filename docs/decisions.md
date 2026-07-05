@@ -1,0 +1,51 @@
+# Architecture decisions
+
+## Context
+
+The app is being rewritten from Go (net/http + html/template + SQLite) to a
+frontend-centric stack. The old code is available in git history
+(`git show 6cd2630:<path>`).
+
+Goal — 50/50 pragmatism and learning: a modern stack without exotics.
+
+## Stack
+
+| Area | Decision | Why |
+|---|---|---|
+| Framework | **SvelteKit (Svelte 5)** | Fullstack in one app: pages, form actions, API, sessions |
+| Language | **TypeScript** | Typed models, safe refactoring |
+| Styling | **Plain CSS** | Svelte scopes styles per component; existing CSS is portable |
+| Database | **SQLite** (same `wishlist.db`) + **Drizzle ORM** | Data migrates as is; typed schema and migrations |
+| Auth | **Passkey / WebAuthn** (@simplewebauthn) | Touch ID login, no password, no external provider. Own signed session cookie. Users live in the DB |
+| Deploy | **Same VPS, Docker**, Node adapter | Infrastructure unchanged |
+
+## Functional requirements
+
+Reproduce as is:
+
+- Whole app behind login, one-year session
+- Wish CRUD: name, link, category, price + currency, manual order (`sort`)
+- Categories and currencies seeded on startup; price history in `prices`
+- Pages: `/` (list), `/new`, `/edit/[id]`, login/logout
+
+Users:
+
+- One user at launch, but the schema is multi-user from day one:
+  `users` table, `wishes.user_id`, wishes scoped per user
+- Registration is closed initially (owner only); how new users join
+  (invites / open signup) is decided later
+
+New:
+
+- **Drag-and-drop reordering** on desktop and mobile via **svelte-dnd-action**
+  (HTML5 DnD doesn't work on touch). Reorder sends the new id order; server
+  updates `sort` in one transaction
+
+## WebAuthn notes
+
+- Bootstrap: registration route works only while `users` is empty
+  (plus a one-time env token) — otherwise the first visitor becomes the owner
+- `credentials` table: `user_id`, public key, signature counter, transports;
+  a user can have several passkeys (Mac, phone)
+- Passkey is domain-bound: `localhost` locally, production domain in prod;
+  register from both devices or rely on iCloud passkey sync
