@@ -22,11 +22,12 @@ reference: `git show 6cd2630:<path>`.
 
 ## 3. Auth (WebAuthn)
 
-- [ ] Registration: only while `users` is empty + one-time env token;
+- [x] Registration: only while no passkey exists + `SETUP_TOKEN` from env;
       store credential (public key, counter, transports)
-- [ ] Login: challenge → verify → signed session cookie (1 year)
-- [ ] Guard in `hooks.server.ts`: everything behind login except `/login`
-- [ ] Logout; support several passkeys per user
+- [x] Login: challenge → verify → signed session cookie (1 year)
+- [x] Guard in `hooks.server.ts`: everything behind login except `/login`
+- [x] Logout; several passkeys per user supported in schema and endpoints
+      (Mac + phone covered by iCloud passkey sync)
 
 ## 4. Pages
 
