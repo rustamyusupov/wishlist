@@ -30,5 +30,11 @@ export default defineConfig(
 				parser: ts.parser
 			}
 		}
+	},
+	{
+		files: ['**/WishList.svelte'],
+		rules: {
+			'svelte/no-navigation-without-resolve': 'off'
+		}
 	}
 );

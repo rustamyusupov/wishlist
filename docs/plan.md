@@ -31,11 +31,11 @@ reference: `git show 6cd2630:<path>`.
 
 ## 4. Pages
 
-- [ ] `/` — wish list grouped like the old home page, prices formatted
+- [x] `/` — wish list grouped like the old home page, prices formatted
       with non-breaking space
-- [ ] `/new`, `/edit/[id]` — form actions for create/update/delete
-- [ ] `/login` — passkey flow
-- [ ] Fresh design for list, forms and login: typography, colors, dark theme
+- [x] `/new`, `/edit/[id]` — form actions for create/update/delete
+- [x] `/login` — passkey flow
+- [x] Fresh design for list, forms and login: typography, colors, dark theme
 
 ## 5. Drag-and-drop
 

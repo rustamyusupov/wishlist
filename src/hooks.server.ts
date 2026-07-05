@@ -16,9 +16,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 				.get() ?? null)
 		: null;
 
-	const isLoginRoute = event.url.pathname === '/login' || event.url.pathname.startsWith('/login/');
+	const isPublicRoute =
+		event.route.id === '/[username]' ||
+		event.url.pathname === '/login' ||
+		event.url.pathname.startsWith('/login/');
 
-	if (!event.locals.user && !isLoginRoute) redirect(303, '/login');
+	if (!event.locals.user && !isPublicRoute) redirect(303, '/login');
 	if (event.locals.user && event.url.pathname === '/login') redirect(303, '/');
 
 	return resolve(event);

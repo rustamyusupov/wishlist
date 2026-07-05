@@ -1,13 +1,14 @@
 :root {
 	color-scheme: light dark;
-	--color-bg: light-dark(#f7f6fa, #1a1922);
-	--color-surface: light-dark(#ffffff, #232130);
-	--color-text: light-dark(#2b2833, #e7e4f0);
-	--color-text-muted: light-dark(#7b7590, #9b95ae);
-	--color-accent: light-dark(#7b6fb0, #aa9de1);
-	--color-accent-soft: light-dark(#eeebf7, #2c2940);
-	--color-border: light-dark(#e5e2ef, #333044);
-	--color-danger: light-dark(#bf7272, #d99a9a);
+	--color-bg: light-dark(#faf9fc, #17161e);
+	--color-surface: light-dark(#ffffff, #221f2e);
+	--color-text: light-dark(#211d2e, #eeecf6);
+	--color-text-muted: light-dark(#6d6685, #a49dbd);
+	--color-accent: light-dark(#6552c8, #a18af5);
+	--color-accent-hover: light-dark(#4c3aa8, #c0b1ff);
+	--color-accent-soft: light-dark(#ece7fb, #2e2848);
+	--color-border: light-dark(#e3dff0, #35314a);
+	--color-danger: light-dark(#c65555, #e58989);
 	--radius: 8px;
 }
 
@@ -43,6 +44,7 @@ h1 {
 
 h2 {
 	font-size: 1.125rem;
+	font-weight: 500;
 	line-height: 1.2;
 }
 
@@ -61,7 +63,7 @@ a {
 }
 
 a:hover {
-	text-decoration: underline;
+	color: var(--color-accent-hover);
 }
 
 :focus-visible {
