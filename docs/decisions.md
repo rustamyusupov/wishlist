@@ -8,6 +8,20 @@ frontend-centric stack. The old code is available in git history
 
 Goal — 50/50 pragmatism and learning: a modern stack without exotics.
 
+## Principles
+
+The codebase must read as a reference SvelteKit app — everything the official
+docs recommend, nothing bespoke:
+
+- Official tooling only: scaffolded and extended with the `sv` CLI,
+  `npm` as the package manager
+- Svelte 5 idioms: runes (`$state`, `$derived`, `$props`), snippets over slots
+- Data flow the SvelteKit way: `load` functions, form actions with progressive
+  enhancement (`use:enhance`) — pages work without JS where feasible
+- Server code in `$lib/server`, validated env via `$env` modules
+- Quality gates: `svelte-check`, ESLint (eslint-plugin-svelte) + Prettier,
+  Vitest for unit tests, Playwright for e2e; a11y warnings are errors
+
 ## Stack
 
 | Area | Decision | Why |
