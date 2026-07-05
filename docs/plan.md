@@ -46,6 +46,6 @@ reference: `git show 6cd2630:<path>`.
 
 ## 6. Deploy
 
-- [ ] Dockerfile (node adapter), `DATABASE_URL` volume
+- [x] Dockerfile (node adapter), `DATABASE_URL` volume
 
 Each step ends with the app running (`npm run dev`) and verified by hand.
