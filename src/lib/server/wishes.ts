@@ -30,7 +30,7 @@ export const parseWishInput = (data: FormData): WishInput | null => {
 	return valid ? { name, link, categoryId, amount, currencyId } : null;
 };
 
-export const listWishGroups = (userId: number) => {
+export const listWishGroups = (userId: number, includeEmpty = false) => {
 	const rows = db
 		.select({
 			id: wishes.id,
@@ -55,6 +55,14 @@ export const listWishGroups = (userId: number) => {
 		.all();
 
 	const grouped = new Map<string, typeof rows>();
+	if (includeEmpty) {
+		const names = db
+			.select({ name: categories.name })
+			.from(categories)
+			.orderBy(asc(categories.name))
+			.all();
+		for (const { name } of names) grouped.set(name, []);
+	}
 	for (const row of rows) {
 		const group = grouped.get(row.category);
 		if (group) group.push(row);
@@ -142,6 +150,16 @@ export const updateWish = (id: number, userId: number, input: WishInput) =>
 		}
 
 		return true;
+	});
+
+export const reorderWishes = (userId: number, categoryId: number, ids: number[]) =>
+	db.transaction((tx) => {
+		ids.forEach((id, index) => {
+			tx.update(wishes)
+				.set({ categoryId, sort: index })
+				.where(and(eq(wishes.id, id), eq(wishes.userId, userId)))
+				.run();
+		});
 	});
 
 export const deleteWish = (id: number, userId: number) =>

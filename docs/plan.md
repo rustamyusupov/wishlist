@@ -39,9 +39,10 @@ reference: `git show 6cd2630:<path>`.
 
 ## 5. Drag-and-drop
 
-- [ ] svelte-dnd-action on the list (desktop + touch)
-- [ ] Reorder action: new id order → update `sort` in one transaction
-- [ ] Optimistic UI, keyboard accessibility
+- [x] svelte-dnd-action on the list (desktop + touch), edit mode only,
+      within a category
+- [x] Reorder action: new id order → update `sort` in one transaction
+- [x] Optimistic UI, keyboard accessibility
 
 ## 6. Deploy
 
