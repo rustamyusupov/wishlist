@@ -12,12 +12,13 @@ reference: `git show 6cd2630:<path>`.
 
 ## 2. Database
 
-- [ ] Drizzle + better-sqlite3, drizzle-kit migrations
-- [ ] Schema: `users`, `credentials`, `categories`, `currencies`, `wishes`
+- [x] Drizzle + better-sqlite3, `drizzle-kit push` workflow — `schema.ts`
+      is the single source of truth, no migration files
+- [x] Schema: `users`, `credentials`, `categories`, `currencies`, `wishes`
       (with `user_id`, `sort`), `prices` (history, `created_at`)
-- [ ] Seed categories and currencies
-- [ ] Migration script: import data from the existing `wishlist.db`,
-      attach wishes to the owner user
+- [x] One-time import from the legacy prod snapshot — done; `local.db` now
+      holds the production data (wishes, prices, seeded categories and
+      currencies) in the new schema
 
 ## 3. Auth (WebAuthn)
 
@@ -43,7 +44,6 @@ reference: `git show 6cd2630:<path>`.
 
 ## 6. Deploy
 
-- [ ] Dockerfile (node adapter), `DB_URL` volume as before
-- [ ] Register passkeys on Mac and phone against the production domain
+- [ ] Dockerfile (node adapter), `DATABASE_URL` volume
 
 Each step ends with the app running (`npm run dev`) and verified by hand.

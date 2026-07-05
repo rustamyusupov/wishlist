@@ -25,14 +25,14 @@ docs recommend, nothing bespoke:
 
 ## Stack
 
-| Area      | Decision                                          | Why                                                                                                |
-| --------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| Framework | **SvelteKit (Svelte 5)**                          | Fullstack in one app: pages, form actions, API, sessions                                           |
-| Language  | **TypeScript**                                    | Typed models, safe refactoring                                                                     |
-| Styling   | **Plain CSS**, fresh redesign                     | Svelte scopes styles per component; pastel lavender palette, dark theme via `light-dark()`         |
-| Database  | **SQLite** (same `wishlist.db`) + **Drizzle ORM** | Data migrates as is; typed schema and migrations                                                   |
-| Auth      | **Passkey / WebAuthn** (@simplewebauthn)          | Touch ID login, no password, no external provider. Own signed session cookie. Users live in the DB |
-| Deploy    | **Same VPS, Docker**, Node adapter                | Infrastructure unchanged                                                                           |
+| Area      | Decision                                 | Why                                                                                                |
+| --------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Framework | **SvelteKit (Svelte 5)**                 | Fullstack in one app: pages, form actions, API, sessions                                           |
+| Language  | **TypeScript**                           | Typed models, safe refactoring                                                                     |
+| Styling   | **Plain CSS**, fresh redesign            | Svelte scopes styles per component; pastel lavender palette, dark theme via `light-dark()`         |
+| Database  | **SQLite** + **Drizzle ORM**             | Typed schema, `drizzle-kit push` workflow; prod data imported once into the new schema             |
+| Auth      | **Passkey / WebAuthn** (@simplewebauthn) | Touch ID login, no password, no external provider. Own signed session cookie. Users live in the DB |
+| Deploy    | **Same VPS, Docker**, Node adapter       | Infrastructure unchanged                                                                           |
 
 ## Functional requirements
 
