@@ -5,10 +5,10 @@ reference: `git show 6cd2630:<path>`.
 
 ## 1. Scaffold
 
-- [ ] SvelteKit (Svelte 5) + TypeScript via `npx sv create`, adapter-node
-- [ ] Prettier + ESLint, `.env` handling (`$env/dynamic/private`)
-- [ ] Dependencies pinned to exact versions (no `^`/`~`)
-- [ ] Base layout, favicon, port `base.css`
+- [x] SvelteKit (Svelte 5) + TypeScript via `npx sv create`, adapter-node
+- [x] Prettier + ESLint, `.env` handling (`$env/dynamic/private`)
+- [x] Dependencies pinned to exact versions (no `^`/`~`)
+- [x] Base layout, favicon, global styles (new design)
 
 ## 2. Database
 
@@ -33,7 +33,7 @@ reference: `git show 6cd2630:<path>`.
       with non-breaking space
 - [ ] `/new`, `/edit/[id]` — form actions for create/update/delete
 - [ ] `/login` — passkey flow
-- [ ] Port `home.css`, `form.css`, `login.css`
+- [ ] Fresh design for list, forms and login: typography, colors, dark theme
 
 ## 5. Drag-and-drop
 
@@ -46,5 +46,4 @@ reference: `git show 6cd2630:<path>`.
 - [ ] Dockerfile (node adapter), `DB_URL` volume as before
 - [ ] Register passkeys on Mac and phone against the production domain
 
-Each step ends with the app running (`npm run dev`) and verified by hand;
-steps 2–3 also with a quick smoke test of the DB/auth flow.
+Each step ends with the app running (`npm run dev`) and verified by hand.

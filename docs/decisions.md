@@ -19,19 +19,20 @@ docs recommend, nothing bespoke:
 - Data flow the SvelteKit way: `load` functions, form actions with progressive
   enhancement (`use:enhance`) — pages work without JS where feasible
 - Server code in `$lib/server`, validated env via `$env` modules
-- Quality gates: `svelte-check`, ESLint (eslint-plugin-svelte) + Prettier,
-  Vitest for unit tests, Playwright for e2e; a11y warnings are errors
+- Quality gates: `svelte-check`, ESLint (eslint-plugin-svelte) + Prettier;
+  a11y warnings are errors. No automated tests, no code comments —
+  verification is by hand
 
 ## Stack
 
-| Area | Decision | Why |
-|---|---|---|
-| Framework | **SvelteKit (Svelte 5)** | Fullstack in one app: pages, form actions, API, sessions |
-| Language | **TypeScript** | Typed models, safe refactoring |
-| Styling | **Plain CSS** | Svelte scopes styles per component; existing CSS is portable |
-| Database | **SQLite** (same `wishlist.db`) + **Drizzle ORM** | Data migrates as is; typed schema and migrations |
-| Auth | **Passkey / WebAuthn** (@simplewebauthn) | Touch ID login, no password, no external provider. Own signed session cookie. Users live in the DB |
-| Deploy | **Same VPS, Docker**, Node adapter | Infrastructure unchanged |
+| Area      | Decision                                          | Why                                                                                                |
+| --------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Framework | **SvelteKit (Svelte 5)**                          | Fullstack in one app: pages, form actions, API, sessions                                           |
+| Language  | **TypeScript**                                    | Typed models, safe refactoring                                                                     |
+| Styling   | **Plain CSS**, fresh redesign                     | Svelte scopes styles per component; pastel lavender palette, dark theme via `light-dark()`         |
+| Database  | **SQLite** (same `wishlist.db`) + **Drizzle ORM** | Data migrates as is; typed schema and migrations                                                   |
+| Auth      | **Passkey / WebAuthn** (@simplewebauthn)          | Touch ID login, no password, no external provider. Own signed session cookie. Users live in the DB |
+| Deploy    | **Same VPS, Docker**, Node adapter                | Infrastructure unchanged                                                                           |
 
 ## Functional requirements
 
