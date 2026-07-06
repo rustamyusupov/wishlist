@@ -57,7 +57,7 @@ export const POST: RequestHandler = async ({ request, url, cookies }) => {
 		.run();
 
 	cookies.delete(CHALLENGE_COOKIE, { path: '/login' });
-	cookies.set(SESSION_COOKIE, createSessionToken(credential.userId), {
+	cookies.set(SESSION_COOKIE, createSessionToken(), {
 		path: '/',
 		maxAge: SESSION_MAX_AGE
 	});

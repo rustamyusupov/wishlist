@@ -25,30 +25,25 @@ docs recommend, nothing bespoke:
 
 ## Stack
 
-| Area      | Decision                                 | Why                                                                                                |
-| --------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| Framework | **SvelteKit (Svelte 5)**                 | Fullstack in one app: pages, form actions, API, sessions                                           |
-| Language  | **TypeScript**                           | Typed models, safe refactoring                                                                     |
-| Styling   | **Plain CSS**, fresh redesign            | Svelte scopes styles per component; pastel lavender palette, dark theme via `light-dark()`         |
-| Database  | **SQLite** + **Drizzle ORM**             | Typed schema, `drizzle-kit push` workflow; prod data imported once into the new schema             |
-| Auth      | **Passkey / WebAuthn** (@simplewebauthn) | Touch ID login, no password, no external provider. Own signed session cookie. Users live in the DB |
-| Deploy    | **Same VPS, Docker**, Node adapter       | Infrastructure unchanged                                                                           |
+| Area      | Decision                                 | Why                                                                                        |
+| --------- | ---------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Framework | **SvelteKit (Svelte 5)**                 | Fullstack in one app: pages, form actions, API, sessions                                   |
+| Language  | **TypeScript**                           | Typed models, safe refactoring                                                             |
+| Styling   | **Plain CSS**, fresh redesign            | Svelte scopes styles per component; pastel lavender palette, dark theme via `light-dark()` |
+| Database  | **SQLite** + **Drizzle ORM**             | Typed schema, `drizzle-kit push` workflow; prod data imported once into the new schema     |
+| Auth      | **Passkey / WebAuthn** (@simplewebauthn) | Touch ID login, no password, no external provider. Own signed session cookie               |
+| Deploy    | **Same VPS, Docker**, Node adapter       | Infrastructure unchanged                                                                   |
 
 ## Functional requirements
 
 Reproduce as is:
 
-- Whole app behind login, one-year session
+- **Single user (the owner).** The list at `/` is public read-only;
+  creating, editing, deleting and reordering require login
+- One-year session
 - Wish CRUD: name, link, category, price + currency, manual order (`sort`)
-- Categories and currencies seeded on startup; price history in `prices`
+- Price history in `prices`
 - Pages: `/` (list), `/new`, `/edit/[id]`, login/logout
-
-Users:
-
-- One user at launch, but the schema is multi-user from day one:
-  `users` table, `wishes.user_id`, wishes scoped per user
-- Registration is closed initially (owner only); how new users join
-  (invites / open signup) is decided later
 
 New:
 
@@ -58,9 +53,9 @@ New:
 
 ## WebAuthn notes
 
-- Bootstrap: registration route works only while `users` is empty
+- Bootstrap: registration route works only while `credentials` is empty
   (plus a one-time env token) — otherwise the first visitor becomes the owner
-- `credentials` table: `user_id`, public key, signature counter, transports;
-  a user can have several passkeys (Mac, phone)
+- `credentials` table: public key, signature counter, transports;
+  the owner can have several passkeys (Mac, phone)
 - Passkey is domain-bound: `localhost` locally, production domain in prod;
   register from both devices or rely on iCloud passkey sync

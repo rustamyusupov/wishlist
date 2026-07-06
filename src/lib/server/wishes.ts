@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, sql } from 'drizzle-orm';
+import { asc, desc, eq, sql } from 'drizzle-orm';
 import { db } from '$lib/server/db';
 import { categories, currencies, prices, wishes } from '$lib/server/db/schema';
 
@@ -30,7 +30,7 @@ export const parseWishInput = (data: FormData): WishInput | null => {
 	return valid ? { name, link, categoryId, amount, currencyId } : null;
 };
 
-export const listWishGroups = (userId: number, includeEmpty = false) => {
+export const listWishGroups = (includeEmpty = false) => {
 	const rows = db
 		.select({
 			id: wishes.id,
@@ -50,7 +50,6 @@ export const listWishGroups = (userId: number, includeEmpty = false) => {
 			)
 		)
 		.leftJoin(currencies, eq(currencies.id, prices.currencyId))
-		.where(eq(wishes.userId, userId))
 		.orderBy(asc(categories.name), asc(wishes.sort), asc(wishes.name))
 		.all();
 
@@ -85,12 +84,8 @@ export const listOptions = () => ({
 		.all()
 });
 
-export const getWish = (id: number, userId: number) => {
-	const wish = db
-		.select()
-		.from(wishes)
-		.where(and(eq(wishes.id, id), eq(wishes.userId, userId)))
-		.get();
+export const getWish = (id: number) => {
+	const wish = db.select().from(wishes).where(eq(wishes.id, id)).get();
 	if (!wish) return null;
 
 	const price = db
@@ -108,18 +103,17 @@ export const getWish = (id: number, userId: number) => {
 	};
 };
 
-export const createWish = (userId: number, input: WishInput) =>
+export const createWish = (input: WishInput) =>
 	db.transaction((tx) => {
 		const { sort } = tx
 			.select({ sort: sql<number>`coalesce(max(${wishes.sort}), -1) + 1` })
 			.from(wishes)
-			.where(and(eq(wishes.userId, userId), eq(wishes.categoryId, input.categoryId)))
+			.where(eq(wishes.categoryId, input.categoryId))
 			.get()!;
 
 		const { id } = tx
 			.insert(wishes)
 			.values({
-				userId,
 				categoryId: input.categoryId,
 				name: input.name,
 				link: input.link,
@@ -133,14 +127,14 @@ export const createWish = (userId: number, input: WishInput) =>
 			.run();
 	});
 
-export const updateWish = (id: number, userId: number, input: WishInput) =>
+export const updateWish = (id: number, input: WishInput) =>
 	db.transaction((tx) => {
-		const current = getWish(id, userId);
+		const current = getWish(id);
 		if (!current) return false;
 
 		tx.update(wishes)
 			.set({ name: input.name, link: input.link, categoryId: input.categoryId })
-			.where(and(eq(wishes.id, id), eq(wishes.userId, userId)))
+			.where(eq(wishes.id, id))
 			.run();
 
 		if (current.amount !== input.amount || current.currencyId !== input.currencyId) {
@@ -152,18 +146,11 @@ export const updateWish = (id: number, userId: number, input: WishInput) =>
 		return true;
 	});
 
-export const reorderWishes = (userId: number, categoryId: number, ids: number[]) =>
+export const reorderWishes = (categoryId: number, ids: number[]) =>
 	db.transaction((tx) => {
 		ids.forEach((id, index) => {
-			tx.update(wishes)
-				.set({ categoryId, sort: index })
-				.where(and(eq(wishes.id, id), eq(wishes.userId, userId)))
-				.run();
+			tx.update(wishes).set({ categoryId, sort: index }).where(eq(wishes.id, id)).run();
 		});
 	});
 
-export const deleteWish = (id: number, userId: number) =>
-	db
-		.delete(wishes)
-		.where(and(eq(wishes.id, id), eq(wishes.userId, userId)))
-		.run();
+export const deleteWish = (id: number) => db.delete(wishes).where(eq(wishes.id, id)).run();

@@ -4,11 +4,7 @@
 
 	let { data } = $props();
 
-	const editable = $derived(data.canEdit && page.url.searchParams.has('edit'));
+	const editable = $derived(data.authenticated && page.url.searchParams.has('edit'));
 </script>
-
-<svelte:head>
-	<title>{data.owner} — Wishlist</title>
-</svelte:head>
 
 <WishList groups={data.groups} {editable} />

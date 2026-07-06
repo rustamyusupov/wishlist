@@ -5,11 +5,11 @@ import type { Actions, PageServerLoad } from './$types';
 export const load: PageServerLoad = () => listOptions();
 
 export const actions: Actions = {
-	default: async ({ request, locals }) => {
+	default: async ({ request }) => {
 		const input = parseWishInput(await request.formData());
 		if (!input) return fail(400, { error: 'All fields are required' });
 
-		createWish(locals.user!.id, input);
+		createWish(input);
 		redirect(303, '/');
 	}
 };

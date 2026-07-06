@@ -14,8 +14,8 @@ reference: `git show 6cd2630:<path>`.
 
 - [x] Drizzle + better-sqlite3, `drizzle-kit push` workflow — `schema.ts`
       is the single source of truth, no migration files
-- [x] Schema: `users`, `credentials`, `categories`, `currencies`, `wishes`
-      (with `user_id`, `sort`), `prices` (history, `created_at`)
+- [x] Schema: `credentials`, `categories`, `currencies`, `wishes` (with
+      `sort`), `prices` (history, `created_at`) — single user, no accounts
 - [x] One-time import from the legacy prod snapshot — done; `local.db` now
       holds the production data (wishes, prices, seeded categories and
       currencies) in the new schema

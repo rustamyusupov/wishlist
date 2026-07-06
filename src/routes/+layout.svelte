@@ -16,20 +16,16 @@
 <div class="app">
 	<header class="header">
 		<h1 class="brand"><a href={resolve('/')}>Wishlist</a></h1>
-		{#if data.user && page.params.username === data.user.username}
+		{#if data.authenticated && page.route.id === '/'}
 			<div class="controls">
 				{#if page.url.searchParams.has('edit')}
-					<a
-						class="mode"
-						href={resolve('/[username]', { username: data.user.username })}
-						aria-label="Done editing"
-					>
+					<a class="mode" href={resolve('/')} aria-label="Done editing">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="24" height="24">
 							<path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
 						</svg>
 					</a>
 				{:else}
-					<form method="GET" action={resolve('/[username]', { username: data.user.username })}>
+					<form method="GET" action={resolve('/')}>
 						<input type="hidden" name="edit" value="" />
 						<button class="mode" type="submit" aria-label="Edit list">
 							<svg
@@ -56,12 +52,8 @@
 	<main class="main">
 		{@render children()}
 	</main>
-	{#if data.user}
+	{#if data.authenticated}
 		<footer class="footer">
-			<a href={resolve('/[username]', { username: data.user.username })}>
-				{data.user.username}
-			</a>
-			<span>·</span>
 			<form method="POST" action={resolve('/logout')} use:enhance>
 				<button class="logout" type="submit">Log out</button>
 			</form>
@@ -126,11 +118,8 @@
 
 	.footer {
 		display: flex;
-		align-items: baseline;
 		justify-content: center;
-		gap: 8px;
 		font-size: 14px;
-		color: var(--color-text-muted);
 	}
 
 	.logout {
@@ -145,6 +134,6 @@
 	}
 
 	.logout:hover {
-		color: var(--color-text);
+		color: var(--color-accent-hover);
 	}
 </style>

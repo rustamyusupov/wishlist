@@ -1,10 +1,10 @@
 import { error, json } from '@sveltejs/kit';
 import { generateRegistrationOptions, verifyRegistrationResponse } from '@simplewebauthn/server';
 import {
+	assertRegistrationAllowed,
 	CHALLENGE_COOKIE,
 	CHALLENGE_MAX_AGE,
 	createSessionToken,
-	resolveRegistrant,
 	SESSION_COOKIE,
 	SESSION_MAX_AGE
 } from '$lib/server/auth';
@@ -14,14 +14,14 @@ import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async ({ request, url, cookies, locals }) => {
 	const body = await request.json();
-	const user = resolveRegistrant(locals.user, body.token);
+	assertRegistrationAllowed(locals.authenticated, body.token);
 
 	if (!body.response) {
 		const registered = db.select({ id: credentials.id }).from(credentials).all();
 		const options = await generateRegistrationOptions({
 			rpName: 'Wishlist',
 			rpID: url.hostname,
-			userName: user.username,
+			userName: 'owner',
 			attestationType: 'none',
 			excludeCredentials: registered,
 			authenticatorSelection: { residentKey: 'preferred', userVerification: 'preferred' }
@@ -49,7 +49,6 @@ export const POST: RequestHandler = async ({ request, url, cookies, locals }) =>
 	db.insert(credentials)
 		.values({
 			id: credential.id,
-			userId: user.id,
 			publicKey: Buffer.from(credential.publicKey),
 			counter: credential.counter,
 			transports: credential.transports ? JSON.stringify(credential.transports) : null
@@ -57,7 +56,7 @@ export const POST: RequestHandler = async ({ request, url, cookies, locals }) =>
 		.run();
 
 	cookies.delete(CHALLENGE_COOKIE, { path: '/login' });
-	cookies.set(SESSION_COOKIE, createSessionToken(user.id), {
+	cookies.set(SESSION_COOKIE, createSessionToken(), {
 		path: '/',
 		maxAge: SESSION_MAX_AGE
 	});
