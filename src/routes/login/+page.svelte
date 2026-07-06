@@ -74,6 +74,12 @@
 		max-width: 320px;
 	}
 
+	@media (max-width: 479px) {
+		.login {
+			max-width: none;
+		}
+	}
+
 	button {
 		min-height: 46px;
 		padding: 5px 15px;
