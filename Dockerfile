@@ -1,38 +1,29 @@
-FROM golang:1.24-alpine AS builder
+FROM node:24-slim AS builder
 
 WORKDIR /app
 
-RUN apk add --no-cache gcc musl-dev
+ENV HUSKY=0
+ENV DATABASE_URL=/tmp/build.db
 
-COPY go.mod go.sum ./
-RUN go mod download
+COPY package.json package-lock.json ./
+RUN npm ci
 
 COPY . .
+RUN npm run build && npm prune --omit=dev
 
-RUN CGO_ENABLED=1 go build -o wishlist ./cmd/server/main.go
-
-FROM alpine:latest
-
-ARG AUTH_EMAIL
-ARG AUTH_PASSWORD_HASH
-ARG DB_URL
-ARG SESSION_KEY
-ARG SESSION_NAME
-
-ENV AUTH_EMAIL=$AUTH_EMAIL
-ENV AUTH_PASSWORD_HASH=$AUTH_PASSWORD_HASH
-ENV DB_URL=$DB_URL
-ENV SESSION_KEY=$SESSION_KEY
-ENV SESSION_NAME=$SESSION_NAME
-
-RUN apk add --no-cache libc6-compat ca-certificates
+FROM node:24-slim
 
 WORKDIR /app
 
-COPY --from=builder /app/wishlist /app/wishlist
-COPY --from=builder /app/web /app/web
+ENV NODE_ENV=production
+ENV PORT=8080
+ENV DATABASE_URL=/app/data/wishlist.db
+
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
 RUN mkdir -p /app/data
 
 EXPOSE 8080
 
-CMD ["/app/wishlist"]
+CMD ["node", "build"]

@@ -1,0 +1,12 @@
+node_modules
+.svelte-kit
+build
+*.db
+.env
+.git
+.github
+.husky
+.vscode
+docs
+Dockerfile
+README.md

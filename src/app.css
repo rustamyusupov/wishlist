@@ -1,0 +1,72 @@
+:root {
+	color-scheme: light dark;
+	--color-bg: light-dark(#faf9fc, #17161e);
+	--color-surface: light-dark(#ffffff, #221f2e);
+	--color-text: light-dark(#211d2e, #eeecf6);
+	--color-text-muted: light-dark(#6d6685, #a49dbd);
+	--color-accent: light-dark(#6552c8, #a18af5);
+	--color-accent-hover: light-dark(#4c3aa8, #c0b1ff);
+	--color-accent-soft: light-dark(#ece7fb, #2e2848);
+	--color-border: light-dark(#e3dff0, #35314a);
+	--color-danger: light-dark(#c65555, #e58989);
+	--radius: 8px;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	font-family: system-ui, sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	min-width: 320px;
+	min-height: 100vh;
+	color: var(--color-text);
+	background-color: var(--color-bg);
+}
+
+h1 {
+	font-size: 1.5rem;
+	line-height: 1.2;
+}
+
+h2 {
+	font-size: 1.125rem;
+	font-weight: 500;
+	line-height: 1.2;
+}
+
+ul {
+	list-style: none;
+}
+
+svg {
+	display: block;
+}
+
+a {
+	color: var(--color-accent);
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+a:hover {
+	color: var(--color-accent-hover);
+}
+
+:focus-visible {
+	outline: 2px solid var(--color-accent);
+	outline-offset: 2px;
+}

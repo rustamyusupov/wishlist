@@ -1,5 +1,10 @@
+node_modules
+/.svelte-kit
+/build
 .DS_Store
+.vscode/*
+!.vscode/extensions.json
 .env
-.vscode
+vite.config.ts.timestamp-*
+*.db
 .tmp
-wishlist.db
