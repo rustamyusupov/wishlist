@@ -119,13 +119,13 @@
 	.footer {
 		display: flex;
 		justify-content: center;
-		font-size: 14px;
+		font-size: 0.875rem;
 	}
 
 	.logout {
 		padding: 15px 0;
 		margin: -15px 0;
-		font-size: 14px;
+		font-size: 0.875rem;
 		color: var(--color-accent);
 		cursor: pointer;
 		background: none;

@@ -30,6 +30,12 @@ html {
 	-webkit-text-size-adjust: 100%;
 }
 
+@media (max-width: 479px) {
+	html {
+		font-size: 18px;
+	}
+}
+
 body {
 	min-width: 320px;
 	min-height: 100vh;

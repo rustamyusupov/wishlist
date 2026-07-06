@@ -85,9 +85,9 @@
 	input,
 	select {
 		width: 100%;
-		height: 46px;
+		height: 2.875rem;
 		padding: 0 14px;
-		font-size: 16px;
+		font-size: 1rem;
 		color: var(--color-text);
 		background-color: var(--color-surface);
 		border: 1px solid var(--color-border);
@@ -125,10 +125,10 @@
 	}
 
 	.actions :global(button) {
-		width: 120px;
-		min-height: 46px;
+		width: 7.5rem;
+		min-height: 2.875rem;
 		padding: 5px;
-		font-size: 16px;
+		font-size: 1rem;
 		color: var(--color-accent);
 		cursor: pointer;
 		background-color: var(--color-accent-soft);

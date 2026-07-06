@@ -81,9 +81,9 @@
 	}
 
 	button {
-		min-height: 46px;
+		min-height: 2.875rem;
 		padding: 5px 15px;
-		font-size: 16px;
+		font-size: 1rem;
 		color: var(--color-accent);
 		cursor: pointer;
 		background-color: var(--color-accent-soft);
@@ -115,14 +115,14 @@
 	}
 
 	.hint {
-		font-size: 14px;
+		font-size: 0.875rem;
 		color: var(--color-text-muted);
 	}
 
 	input {
-		height: 46px;
+		height: 2.875rem;
 		padding: 0 14px;
-		font-size: 16px;
+		font-size: 1rem;
 		color: var(--color-text);
 		background-color: var(--color-surface);
 		border: 1px solid var(--color-border);
