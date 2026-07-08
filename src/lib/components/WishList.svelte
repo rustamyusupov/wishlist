@@ -4,7 +4,8 @@
 	import { deserialize } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import { formatPrice } from '$lib/format';
+	import { formatPercent, formatPrice } from '$lib/format';
+	import type { PriceChange } from '$lib/prices';
 
 	type Item = {
 		id: number;
@@ -12,6 +13,7 @@
 		link: string;
 		amount: number | null;
 		symbol: string | null;
+		change: PriceChange | null;
 	};
 	type Group = { name: string; items: Item[] };
 
@@ -65,7 +67,34 @@
 		{#if editable}{wish.name}{:else}<a href={wish.link}>{wish.name}</a
 			>{/if}{#if wish.amount !== null && wish.symbol !== null}<span class="price"
 				>&nbsp;– {formatPrice(wish.amount, wish.symbol)}</span
-			>{/if}
+			>{#if !editable}&nbsp;<a
+					class="change"
+					class:down={wish.change?.direction === 'down'}
+					class:up={wish.change?.direction === 'up'}
+					href={resolve('/wish/[id]', { id: String(wish.id) })}
+					aria-label={wish.change?.low ? 'Price history, at its lowest' : 'Price history'}
+				>
+					{#if wish.change}
+						<span class="delta" class:lowest={wish.change.low}
+							>{#if wish.change.low && wish.change.percent < 1}min{:else}{wish.change.direction ===
+								'down'
+									? '↓'
+									: '↑'}{formatPercent(wish.change.percent)}{/if}</span
+						>
+					{:else}
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14">
+							<path
+								d="M1.5 11.5 6 7l3 3 5.5-6.5"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.5"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
+						</svg>
+					{/if}
+				</a>
+			{/if}{/if}
 	</p>
 {/snippet}
 
@@ -164,5 +193,46 @@
 	.price {
 		color: var(--color-text);
 		font-variant-numeric: tabular-nums;
+	}
+
+	.change {
+		padding: 10px 6px;
+		margin: -10px -2px -10px -6px;
+		font-size: 0.875rem;
+		font-variant-numeric: tabular-nums;
+		color: var(--color-text-muted);
+		white-space: nowrap;
+	}
+
+	@media (max-width: 479px) {
+		.change {
+			padding-left: 10px;
+			margin-left: -4px;
+			font-size: 1rem;
+		}
+	}
+
+	.change.down {
+		color: var(--color-success);
+	}
+
+	.change.up {
+		color: var(--color-danger);
+	}
+
+	.change:hover {
+		color: var(--color-accent-hover);
+	}
+
+	.change svg {
+		display: inline-block;
+		vertical-align: -1px;
+	}
+
+	.delta.lowest {
+		padding: 1px 8px;
+		margin-inline: -2px;
+		background-color: var(--color-success-soft);
+		border-radius: 999px;
 	}
 </style>

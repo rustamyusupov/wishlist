@@ -9,6 +9,8 @@
 	--color-accent-soft: light-dark(#ece7fb, #2e2848);
 	--color-border: light-dark(#e3dff0, #35314a);
 	--color-danger: light-dark(#c65555, #e58989);
+	--color-success: light-dark(#357a4a, #7dc48f);
+	--color-success-soft: light-dark(#e8f5ec, #24402e);
 	--radius: 8px;
 }
 

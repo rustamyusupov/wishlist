@@ -1,4 +1,5 @@
 import { asc, desc, eq, sql } from 'drizzle-orm';
+import { priceChange } from '$lib/prices';
 import { db } from '$lib/server/db';
 import { categories, currencies, prices, wishes } from '$lib/server/db/schema';
 
@@ -53,7 +54,32 @@ export const listWishGroups = (includeEmpty = false) => {
 		.orderBy(asc(categories.name), asc(wishes.sort), asc(wishes.name))
 		.all();
 
-	const grouped = new Map<string, typeof rows>();
+	const priceRows = db
+		.select({
+			wishId: prices.wishId,
+			amount: prices.amount,
+			code: currencies.code,
+			createdAt: prices.createdAt
+		})
+		.from(prices)
+		.innerJoin(currencies, eq(currencies.id, prices.currencyId))
+		.orderBy(asc(prices.createdAt), asc(prices.id))
+		.all();
+
+	const histories = new Map<number, typeof priceRows>();
+	for (const price of priceRows) {
+		const history = histories.get(price.wishId);
+		if (history) history.push(price);
+		else histories.set(price.wishId, [price]);
+	}
+
+	const now = new Date();
+	const items = rows.map((row) => ({
+		...row,
+		change: priceChange(histories.get(row.id) ?? [], now)
+	}));
+
+	const grouped = new Map<string, typeof items>();
 	if (includeEmpty) {
 		const names = db
 			.select({ name: categories.name })
@@ -62,10 +88,10 @@ export const listWishGroups = (includeEmpty = false) => {
 			.all();
 		for (const { name } of names) grouped.set(name, []);
 	}
-	for (const row of rows) {
-		const group = grouped.get(row.category);
-		if (group) group.push(row);
-		else grouped.set(row.category, [row]);
+	for (const item of items) {
+		const group = grouped.get(item.category);
+		if (group) group.push(item);
+		else grouped.set(item.category, [item]);
 	}
 
 	return [...grouped].map(([name, items]) => ({ name, items }));
@@ -101,6 +127,26 @@ export const getWish = (id: number) => {
 		amount: price === undefined ? undefined : Math.round(price.amount * 100) / 100,
 		currencyId: price?.currencyId
 	};
+};
+
+export const getWishHistory = (id: number) => {
+	const wish = db.select().from(wishes).where(eq(wishes.id, id)).get();
+	if (!wish) return null;
+
+	const history = db
+		.select({
+			amount: prices.amount,
+			code: currencies.code,
+			symbol: currencies.symbol,
+			createdAt: prices.createdAt
+		})
+		.from(prices)
+		.innerJoin(currencies, eq(currencies.id, prices.currencyId))
+		.where(eq(prices.wishId, id))
+		.orderBy(asc(prices.createdAt), asc(prices.id))
+		.all();
+
+	return { ...wish, history };
 };
 
 export const createWish = (input: WishInput) =>
