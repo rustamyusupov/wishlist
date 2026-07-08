@@ -15,7 +15,7 @@
 		symbol: string | null;
 		change: PriceChange | null;
 	};
-	type Group = { name: string; items: Item[] };
+	type Group = { name: string; categoryId: number; items: Item[] };
 
 	let { groups, editable = false }: { groups: Group[]; editable?: boolean } = $props();
 
@@ -27,21 +27,21 @@
 		lists = lists.map((group) => (group.name === name ? { ...group, items } : group));
 	};
 
-	const consider = (name: string, event: CustomEvent<DndEvent<Item>>) => {
-		reorder(name, event.detail.items);
+	const consider = (group: Group, event: CustomEvent<DndEvent<Item>>) => {
+		reorder(group.name, event.detail.items);
 	};
 
-	const finalize = async (name: string, event: CustomEvent<DndEvent<Item>>) => {
-		reorder(name, event.detail.items);
+	const finalize = async (group: Group, event: CustomEvent<DndEvent<Item>>) => {
+		reorder(group.name, event.detail.items);
 
-		const before = groups.find((group) => group.name === name)?.items ?? [];
+		const before = groups.find((current) => current.name === group.name)?.items ?? [];
 		const after = event.detail.items;
 		if (after.map((item) => item.id).join(',') === before.map((item) => item.id).join(',')) {
 			return;
 		}
 
 		const body = new FormData();
-		body.set('category', name);
+		body.set('categoryId', String(group.categoryId));
 		body.set('ids', after.map((item) => item.id).join(','));
 		const response = await fetch('?/reorder', {
 			method: 'POST',
@@ -113,8 +113,8 @@
 					flipDurationMs: FLIP_DURATION,
 					dropTargetStyle: {}
 				}}
-				onconsider={(event) => consider(group.name, event)}
-				onfinalize={(event) => finalize(group.name, event)}
+				onconsider={(event) => consider(group, event)}
+				onfinalize={(event) => finalize(group, event)}
 			>
 				{#each group.items as wish (wish.id)}
 					<li class="wish draggable" animate:flip={{ duration: FLIP_DURATION }}>

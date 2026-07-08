@@ -1,11 +1,16 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import favicon from '$lib/assets/favicon.svg';
 	import '../app.css';
 
 	let { data, children } = $props();
+
+	const logout = async () => {
+		await fetch('/api/auth/logout', { method: 'POST' });
+		await goto(resolve('/login'), { invalidateAll: true });
+	};
 </script>
 
 <svelte:head>
@@ -54,9 +59,7 @@
 	</main>
 	{#if data.authenticated}
 		<footer class="footer">
-			<form method="POST" action={resolve('/logout')} use:enhance>
-				<button class="logout" type="submit">Log out</button>
-			</form>
+			<button class="logout" type="button" onclick={logout}>Log out</button>
 		</footer>
 	{/if}
 </div>

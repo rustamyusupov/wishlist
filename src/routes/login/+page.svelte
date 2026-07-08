@@ -28,9 +28,9 @@
 	const login = async () => {
 		message = '';
 		try {
-			const options = await post('/login/passkey', {});
+			const options = await post('/api/auth/login', {});
 			const assertion = await startAuthentication({ optionsJSON: options });
-			await post('/login/passkey', assertion);
+			await post('/api/auth/login', assertion);
 			await goto(resolve('/'), { invalidateAll: true });
 		} catch (cause) {
 			report(cause, 'Sign-in failed');
@@ -40,9 +40,9 @@
 	const register = async () => {
 		message = '';
 		try {
-			const options = await post('/login/register', { token: setupToken });
+			const options = await post('/api/auth/register', { token: setupToken });
 			const registration = await startRegistration({ optionsJSON: options });
-			await post('/login/register', { token: setupToken, response: registration });
+			await post('/api/auth/register', { token: setupToken, response: registration });
 			await goto(resolve('/'), { invalidateAll: true });
 		} catch (cause) {
 			report(cause, 'Registration failed');
